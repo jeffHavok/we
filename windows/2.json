@@ -13,7 +13,7 @@
         {
         "pd"       : [3, 3, 3, 3],
         "glass"    : true,
-        "triangle" : "right"
+        "triangle" : "left"
         }
     ]
     }
