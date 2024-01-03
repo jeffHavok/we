@@ -1,14 +1,13 @@
+let we = null; 
 function loadWeWindow(url){
     fetch(url)
         .then(res => res.json())
         .then(data => {
-            console.log(data)
-            // let we = new WE(data,2);
-            // we.init("editor-wrap");
-            // we.updateInputs();   
+            we = new WE(data,2);
+            we.init("editor-wrap");
+            we.updateInputs();   
         })
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     /*--- button events ---*/
     document.getElementById("we-height").addEventListener("change", (e) => {
