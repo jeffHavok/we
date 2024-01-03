@@ -1,0 +1,43 @@
+{
+    "h"     : 120,
+    "minh"  : 100,
+    "maxh"  : 170,
+    "w"     : 120,
+    "minw"  : 80,
+    "maxw"  : 170,
+    "pd"    : [2, 2, 2, 2],
+    "gap"   : 2,
+    "grid"  : [1, 3],
+    "child" : [
+    {
+        "pd"    : [2, 2, 2, 2],
+        "cross" : true,
+        "child" : [
+        {
+            "pd"    : [3, 3, 3, 3],
+            "glass" : true
+        }
+        ]
+    },
+    {
+        "pd"    : [2, 2, 2, 2],
+        "cross" : true,
+        "child" : [
+        {
+            "pd"    : [3, 3, 3, 3],
+            "glass" : true
+        }
+        ]
+    },
+    {
+        "pd"    : [2, 2, 2, 2],
+        "cross" : true,
+        "child" : [
+        {
+            "pd"    : [3, 3, 3, 3],
+            "glass" : true
+        }
+        ]
+    }
+    ]
+}
