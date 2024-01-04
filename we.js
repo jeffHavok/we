@@ -302,7 +302,6 @@ function drawNodeTree(node, ctx, firstEntry = false){
         node.child.forEach((e) => drawNodeTree(e, ctx));
 }
 
-
 function upscaleGeometry(node, factor = 1, ctx, firstEntry = false){
     if (firstEntry)
         calcNode(node);
@@ -337,7 +336,7 @@ function updateWindowEditor(params, node = null) {
     params.canvasEl.width = params.canvasEl.clientWidth * params.dpi; 
     params.canvasEl.height = params.canvasEl.clientHeight * params.dpi; 
     params.node.factor =    Math.min(params.canvasEl.width, params.canvasEl.height) /
-                            Math.max(params.node.h - 40, params.node.w - 40);
+                            Math.max(params.node.h, params.node.w);
 
     params = getWindowCenter(params);
     params.ctx.translate(- params.oldOffsetX, - params.oldOffsetY);
@@ -401,6 +400,10 @@ class WE {
     }
 
     clamp(val,min,max){
+        if (isNaN(min))
+            min = 0; 
+        if (isNaN(max))
+            min = 5000; 
         return Math.max(Math.min(val, max), min); 
     }
 
@@ -417,6 +420,12 @@ class WE {
                 break;
             case "row":
                 this.node.row = this.clamp(value, this.node.minrow, this.node.maxrow)
+                break;
+            case "col2":
+                this.node.col2 = this.clamp(value, this.node.mincol2, this.node.maxcol2)
+                break;
+            case "row2":
+                this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
                 break;
             case "dpi":
                 this.dpi = this.clamp(value, 0.5, 8)
@@ -437,6 +446,10 @@ class WE {
             this.node.mincol = 5;
         if (isNaN(this.node.minrow))
             this.node.minrow = 5;
+        if (isNaN(this.node.mincol2))
+            this.node.mincol2 = 5;
+        if (isNaN(this.node.minrow2))
+            this.node.minrow2 = 5;
         
         if (isNaN(this.node.maxh))
             this.node.maxh = this.node.h * 2; 
@@ -446,13 +459,19 @@ class WE {
             this.node.maxcol = this.node.w;
         if (isNaN(this.node.maxrow))
             this.node.maxrow = this.node.h;
+        if (isNaN(this.node.maxcol2))
+            this.node.maxcol2 = this.node.w;
+        if (isNaN(this.node.maxrow2))
+            this.node.maxrow2 = this.node.h;
 
         this.ctx.width = this.canvasEl.width = this.canvasEl.clientWidth * this.dpi;
         this.ctx.height = this.canvasEl.height = this.canvasEl.clientHeight * this.dpi;
         
-        this.node.factor =  Math.max(this.canvasEl.width, this.canvasEl.height) /
-                            Math.max(this.node.maxh + 40, this.node.maxw + 40);
-        this.node.factor =  Math.floor(this.node.factor);   
+        //if (!this.node.factor){
+            this.node.factor =  Math.max(this.canvasEl.width, this.canvasEl.height) /
+            Math.max(this.node.maxh, this.node.maxw);
+            this.node.factor =  Math.floor(this.node.factor);   
+        //}
         
         let viewportHeight = this.canvasEl.height; 
         let viewportWidth = this.canvasEl.width; 
@@ -464,7 +483,10 @@ class WE {
         let hEl = document.getElementById("we-height"), 
             wEl = document.getElementById("we-width"),
             colEl = document.getElementById("we-col"), 
-            rowEl = document.getElementById("we-row");
+            rowEl = document.getElementById("we-row"),
+            col2El = document.getElementById("we-col2"), 
+            row2El = document.getElementById("we-row2");
+
         if (hEl){
             hEl.style.display = "block";
             hEl.style.left = `calc(50% + ${((this.node.w / 4) + 14)  * this.node.factor}px)`;
@@ -500,6 +522,28 @@ class WE {
             rowEl.setAttribute("min", this.node.minrow);
             rowEl.setAttribute("max", this.node.maxrow);
             rowEl.setAttribute("value", this.node.row);
+        }
+        if(col2El){
+            if (this.node.col2)
+                col2El.style.display = "block";
+            else 
+                col2El.style.display = "none";
+            col2El.style.top = `calc(50% - ${((this.node.h / 4) + 7) * this.node.factor}px)`;
+            col2El.style.left = `calc(50% - ${(((this.node.w - this.node.col2) / 4 - this.node.col / 2) ) * this.node.factor}px)`; 
+            col2El.setAttribute("min", this.node.mincol2);
+            col2El.setAttribute("max", this.node.maxcol2);
+            col2El.setAttribute("value", this.node.col2);
+        }
+        if(row2El){
+            if (this.node.row2)
+                row2El.style.display = "block";
+            else 
+                row2El.style.display = "none";
+            row2El.style.left = `calc(50% + ${((this.node.w / 4) + 6) * this.node.factor}px)`;
+            row2El.style.top = `calc(50% - ${(((this.node.h - this.node.row2) / 4 - this.node.row / 2) ) * this.node.factor}px)`;
+            row2El.setAttribute("min", this.node.minrow2);
+            row2El.setAttribute("max", this.node.maxrow2);
+            row2El.setAttribute("value", this.node.row2);
         }
     }
 
