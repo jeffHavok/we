@@ -1,3 +1,4 @@
+
 function calcNodeGrid(node, paddingNeeded){
     let stepX = node.w / node.grid[0]; 
     let stepY = node.h / node.grid[1];
@@ -5,7 +6,11 @@ function calcNodeGrid(node, paddingNeeded){
         stepX = (node.w - node.col) / (node.grid[0] - 1);
     if (node.row && node.grid[1] > 1)
         stepY = (node.h - node.row) / (node.grid[1] - 1);
-
+    if (node.col2 && node.grid[0] > 2)
+        stepX = (node.w - (node.col + node.col2)) / (node.grid[0] - 2);
+    if (node.row2 && node.grid[1] > 2)
+        stepY = (node.h - (node.row + node.row2)) / (node.grid[1] - 2);
+    console.log(stepX, stepY ); 
     node.gridPts = Array.from(Array(node.grid[0]), () => new Array(node.grid[1]));
     
     for (let j = 0; j < node.grid[0]; j++){      
@@ -13,12 +18,26 @@ function calcNodeGrid(node, paddingNeeded){
             node.gridPts[j][k] = {};
             //---basic geometry
             if (node.col){
-                if (j != 0){
+                if (j > 0){
                     node.gridPts[j][k].x1 = stepX * (j - 1) + node.col;
                     node.gridPts[j][k].x2 = stepX * j + node.col;
                 } else {
                     node.gridPts[j][k].x1 = 0;
                     node.gridPts[j][k].x2 = node.col; 
+                }
+                if (node.col2){
+                    if (j > 1){
+                        node.gridPts[j][k].x1 = stepX * (j - 2) + node.col + node.col2;
+                        node.gridPts[j][k].x2 = stepX * (j - 1) + node.col + node.col2;
+                    } 
+                    if (j == 1){
+                        node.gridPts[j][k].x1 = node.col;
+                        node.gridPts[j][k].x2 = node.col + node.col2; 
+                    }    
+                    if (j == 0){
+                        node.gridPts[j][k].x1 = 0;
+                        node.gridPts[j][k].x2 = node.col; 
+                    }    
                 }
             } else {
                 node.gridPts[j][k].x1 = stepX * j;
@@ -32,6 +51,20 @@ function calcNodeGrid(node, paddingNeeded){
                 } else {
                     node.gridPts[j][k].y1 = 0;
                     node.gridPts[j][k].y2 = node.row; 
+                }
+                if (node.row2){
+                    if (k > 1){
+                        node.gridPts[j][k].y1 = stepY * (k - 2) + node.row + node.row2;
+                        node.gridPts[j][k].y2 = stepY * (k - 1) + node.row + node.row2;
+                    } 
+                    if (k == 1){
+                        node.gridPts[j][k].y1 = node.row;
+                        node.gridPts[j][k].y2 = node.row + node.row2;
+                    } 
+                    if (k == 0){
+                        node.gridPts[j][k].y1 = 0;
+                        node.gridPts[j][k].y2 = node.row;
+                    }
                 }
             } else {
                 node.gridPts[j][k].y1 = stepY * k;
@@ -144,26 +177,42 @@ function drawNodeTree(node, ctx, firstEntry = false){
         ctx.lineTo(node.bb.x2 + 28 * node.factor, node.bb.y2);
 
         if (node.col){
-            ctx.fillStyle = "#0006";
-            ctx.fillText((  node.w - node.col), 
-                            node.bb.x2 - ((node.w - node.col) * node.factor) / 2,
-                            node.bb.y1 - 15 * node.factor);
-
             ctx.moveTo(node.bb.x1 + node.col * node.factor, node.bb.y1);
             ctx.lineTo(node.bb.x1 + node.col * node.factor, node.bb.y1 - 15 * node.factor); 
             ctx.moveTo(node.bb.x1, node.bb.y1 - 13 * node.factor);
             ctx.lineTo(node.bb.x2, node.bb.y1 - 13 * node.factor);
         }
-        if (node.row){
-            ctx.fillStyle = "#0006";
-            ctx.fillText((  node.h - node.row), 
-                            node.bb.x2 + 20 * node.factor, 
-                            node.bb.y2 - ((node.h - node.row) * node.factor) / 2);
 
+        ctx.fillStyle = "#0006";
+        if (node.col && !node.col2){
+            ctx.fillText((  node.w - node.col), 
+                            node.bb.x2 - ((node.w - node.col) * node.factor) / 2,
+                            node.bb.y1 - 15 * node.factor);
+        }
+        if (node.col && node.col2){
+            ctx.moveTo(node.bb.x1 + (node.col + node.col2) * node.factor, node.bb.y1);
+            ctx.lineTo(node.bb.x1 + (node.col + node.col2) * node.factor, node.bb.y1 - 15 * node.factor); 
+            ctx.fillText((  node.w - node.col - node.col2), 
+                            node.bb.x2 - ((node.w - node.col - node.col2) * node.factor) / 2,
+                            node.bb.y1 - 15 * node.factor);
+        }
+        if (node.row){
             ctx.moveTo(node.bb.x2, node.bb.y1 + node.row * node.factor);
             ctx.lineTo(node.bb.x2 + 15 * node.factor, node.bb.y1 + node.row * node.factor);
             ctx.moveTo(node.bb.x2 + 13 * node.factor, node.bb.y1);
             ctx.lineTo(node.bb.x2 + 13 * node.factor, node.bb.y2);   
+        }
+        if (node.row && !node.row2){
+            ctx.fillText((  node.h - node.row), 
+                            node.bb.x2 + 20 * node.factor, 
+                            node.bb.y2 - ((node.h - node.row) * node.factor) / 2);
+        }
+        if (node.row && node.row2){
+            ctx.fillText((  node.h - node.row - node.row2), 
+                            node.bb.x2 + 20 * node.factor, 
+                            node.bb.y2 - ((node.h - node.row - node.row2) * node.factor) / 2);
+            ctx.moveTo(node.bb.x2, node.bb.y1 + (node.row + node.row2) * node.factor);
+            ctx.lineTo(node.bb.x2 + 15 * node.factor, node.bb.y1 + (node.row + node.row2) * node.factor);
         }
 
         ctx.closePath();
@@ -253,6 +302,7 @@ function drawNodeTree(node, ctx, firstEntry = false){
         node.child.forEach((e) => drawNodeTree(e, ctx));
 }
 
+
 function upscaleGeometry(node, factor = 1, ctx, firstEntry = false){
     if (firstEntry)
         calcNode(node);
@@ -287,7 +337,7 @@ function updateWindowEditor(params, node = null) {
     params.canvasEl.width = params.canvasEl.clientWidth * params.dpi; 
     params.canvasEl.height = params.canvasEl.clientHeight * params.dpi; 
     params.node.factor =    Math.min(params.canvasEl.width, params.canvasEl.height) /
-                            Math.max(params.node.h, params.node.w);
+                            Math.max(params.node.h - 40, params.node.w - 40);
 
     params = getWindowCenter(params);
     params.ctx.translate(- params.oldOffsetX, - params.oldOffsetY);
@@ -400,11 +450,9 @@ class WE {
         this.ctx.width = this.canvasEl.width = this.canvasEl.clientWidth * this.dpi;
         this.ctx.height = this.canvasEl.height = this.canvasEl.clientHeight * this.dpi;
         
-        //if (!this.node.factor){
-            this.node.factor =  Math.max(this.canvasEl.width, this.canvasEl.height) /
-            Math.max(this.node.maxh, this.node.maxw);
-            this.node.factor =  Math.floor(this.node.factor);   
-        //}
+        this.node.factor =  Math.max(this.canvasEl.width, this.canvasEl.height) /
+                            Math.max(this.node.maxh + 40, this.node.maxw + 40);
+        this.node.factor =  Math.floor(this.node.factor);   
         
         let viewportHeight = this.canvasEl.height; 
         let viewportWidth = this.canvasEl.width; 
