@@ -26,6 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
         we.setParam("row", e.target.value); 
         we.updateInputs();
     })
+    document.getElementById("we-col2").addEventListener("change", (e) => {
+        we.setParam("col2", e.target.value); 
+        we.updateInputs();
+    })
+    document.getElementById("we-row2").addEventListener("change", (e) => {
+        we.setParam("row2", e.target.value); 
+        we.updateInputs();
+    })
     /*--- resize event ---*/
     addEventListener("resize", (event) => {
         we.update(); 
