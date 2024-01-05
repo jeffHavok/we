@@ -426,7 +426,6 @@ class WE {
         let newMinY = ((this.node.row | 0) + (this.node.row2 | 0) + 10 * multY); 
         let capX = this.node.w - newMinX;
         let capY = this.node.h - newMinY;
-        console.log(capX, capY); 
         switch (param) {
             case "height":
                 if (capY > 0) 
