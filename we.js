@@ -408,16 +408,20 @@ class WE {
 
     setParam(param = "height", value, inverted){
         let oldVal = 0; 
-        let multX = (this.node.grid[0] | 0);
-        if (this.node.col)
-            multX--;
-        if (this.node.col2)
-            multX--;
-        let multY = (this.node.grid[1] | 0);
-        if (this.node.row)
-            multY--;
-        if (this.node.row2)
-            multY--;
+        let multX = 1;
+        let multY = 1;
+        if (this.node.grid){
+            multX = this.node.grid[0];
+            if (this.node.col)
+                multX--;
+            if (this.node.col2)
+                multX--;
+            multY = (this.node.grid[1] | 0);
+            if (this.node.row)
+                multY--;
+            if (this.node.row2)
+                multY--;
+        }
         let newMinX = ((this.node.col | 0) + (this.node.col2 | 0) + 10 * multX); 
         let newMinY = ((this.node.row | 0) + (this.node.row2 | 0) + 10 * multY); 
         let capX = this.node.w - newMinX;
