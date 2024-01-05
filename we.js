@@ -425,28 +425,46 @@ class WE {
         console.log(capX, capY); 
         switch (param) {
             case "height":
-                oldVal = this.node.h; 
-                this.node.h = this.clamp(value, this.node.minh, this.node.maxh)
+                if (capY > 0) 
+                    this.node.h = this.clamp(value, this.node.minh, this.node.maxh)
+                else if ((this.node.h - value) > 0)
+                    this.node.h = this.clamp(value, this.node.minh, this.node.maxh)
+                this.hEl.value = this.node.h;
                 break;
             case "width":
-                oldVal = this.node.w;
-                this.node.w = this.clamp(value, this.node.minw, this.node.maxw)
+                if (capX > 0) 
+                    this.node.w = this.clamp(value, this.node.minw, this.node.maxw)
+                else if ((this.node.w - value) > 0)
+                    this.node.w = this.clamp(value, this.node.minw, this.node.maxw)
+                this.wEl.value = this.node.w;
                 break;
             case "col":
-                oldVal = this.node.col;
-                this.node.col = this.clamp(value, this.node.mincol, this.node.maxcol)
+                if (capX > 0)  
+                    this.node.col = this.clamp(value, this.node.mincol, this.node.maxcol)
+                else if ((this.node.col - value) > 0)
+                    this.node.col = this.clamp(value, this.node.mincol, this.node.maxcol)
+                this.colEl.value = this.node.col;
                 break;
             case "row":
-                oldVal = this.node.row;
-                this.node.row = this.clamp(value, this.node.minrow, this.node.maxrow)
+                if (capY > 0)  
+                    this.node.row = this.clamp(value, this.node.minrow, this.node.maxrow)
+                else if ((this.node.row - value) > 0)
+                    this.node.row = this.clamp(value, this.node.minrow, this.node.maxrow)
+                this.rowEl.value = this.node.row;
                 break;
             case "col2":
-                oldVal = this.node.col2;
-                this.node.col2 = this.clamp(value, this.node.mincol2, this.node.maxcol2)
+                if (capX > 0)  
+                    this.node.col2 = this.clamp(value, this.node.mincol2, this.node.maxcol2)
+                else if ((this.node.col2 - value) > 0)
+                    this.node.col2 = this.clamp(value, this.node.mincol2, this.node.maxcol2)
+                this.col2El.value = this.node.col2;
                 break;
             case "row2":
-                oldVal = this.node.row2;
-                this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
+                if (capY > 0)  
+                    this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
+                else if ((this.node.ro2 - value) > 0)
+                    this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
+                this.row2El.value = this.node.row2;
                 break;
             case "dpi":
                 this.dpi = this.clamp(value, 0.5, 8)
@@ -460,17 +478,17 @@ class WE {
 
     calcNewFactor(){
         if (isNaN(this.node.minh))
-            this.node.minh = 5; 
+            this.node.minh = 10; 
         if (isNaN(this.node.minw))
-            this.node.minw = 5; 
+            this.node.minw = 10; 
         if (isNaN(this.node.mincol))
-            this.node.mincol = 5;
+            this.node.mincol = 10;
         if (isNaN(this.node.minrow))
-            this.node.minrow = 5;
+            this.node.minrow = 10;
         if (isNaN(this.node.mincol2))
-            this.node.mincol2 = 5;
+            this.node.mincol2 = 10;
         if (isNaN(this.node.minrow2))
-            this.node.minrow2 = 5;
+            this.node.minrow2 = 10;
         
         if (isNaN(this.node.maxh))
             this.node.maxh = this.node.h * 2; 
@@ -501,70 +519,70 @@ class WE {
     }
 
     updateInputs(){
-        let hEl = document.getElementById("we-height"), 
-            wEl = document.getElementById("we-width"),
-            colEl = document.getElementById("we-col"), 
-            rowEl = document.getElementById("we-row"),
-            col2El = document.getElementById("we-col2"), 
-            row2El = document.getElementById("we-row2");
+        this.hEl = document.getElementById("we-height"), 
+        this.wEl = document.getElementById("we-width"),
+        this.colEl = document.getElementById("we-col"), 
+        this.rowEl = document.getElementById("we-row"),
+        this.col2El = document.getElementById("we-col2"), 
+        this.row2El = document.getElementById("we-row2");
 
-        if (hEl){
-            hEl.style.display = "block";
-            hEl.style.left = `calc(50% + ${((this.node.w / 4) + 14)  * this.node.factor}px)`;
-            hEl.setAttribute("min", this.node.minh);
-            hEl.setAttribute("max", this.node.maxh);
-            hEl.setAttribute("value", this.node.h);
+        if (this.hEl){
+            this.hEl.style.display = "block";
+            this.hEl.style.left = `calc(50% + ${((this.node.w / 4) + 14)  * this.node.factor}px)`;
+            this.hEl.setAttribute("min", this.node.minh);
+            this.hEl.setAttribute("max", this.node.maxh);
+            this.hEl.setAttribute("value", this.node.h);
         }
-        if (wEl){
-            wEl.style.display = "block";
-            wEl.style.top = `calc(50% - ${((this.node.h / 4) + 14) * this.node.factor}px)`; 
-            wEl.setAttribute("min", this.node.minw);
-            wEl.setAttribute("max", this.node.maxw);
-            wEl.setAttribute("value", this.node.w);
+        if (this.wEl){
+            this.wEl.style.display = "block";
+            this.wEl.style.top = `calc(50% - ${((this.node.h / 4) + 14) * this.node.factor}px)`; 
+            this.wEl.setAttribute("min", this.node.minw);
+            this.wEl.setAttribute("max", this.node.maxw);
+            this.wEl.setAttribute("value", this.node.w);
         }
-        if(colEl){
+        if(this.colEl){
             if (this.node.col)
-                colEl.style.display = "block";
+                this.colEl.style.display = "block";
             else 
-                colEl.style.display = "none";
-            colEl.style.top = `calc(50% - ${((this.node.h / 4) + 7) * this.node.factor}px)`;
-            colEl.style.left = `calc(50% - ${(((this.node.w - this.node.col) / 4) ) * this.node.factor}px)`; 
-            colEl.setAttribute("min", this.node.mincol);
-            colEl.setAttribute("max", this.node.maxcol);
-            colEl.setAttribute("value", this.node.col);
+                this.colEl.style.display = "none";
+            this.colEl.style.top = `calc(50% - ${((this.node.h / 4) + 7) * this.node.factor}px)`;
+            this.colEl.style.left = `calc(50% - ${(((this.node.w - this.node.col) / 4) ) * this.node.factor}px)`; 
+            this.colEl.setAttribute("min", this.node.mincol);
+            this.colEl.setAttribute("max", this.node.maxcol);
+            this.colEl.setAttribute("value", this.node.col);
         }
-        if(rowEl){
+        if(this.rowEl){
             if (this.node.row)
-                rowEl.style.display = "block";
+                this.rowEl.style.display = "block";
             else 
-                rowEl.style.display = "none";
-            rowEl.style.left = `calc(50% + ${((this.node.w / 4) + 6) * this.node.factor}px)`;
-            rowEl.style.top = `calc(50% - ${(((this.node.h - this.node.row) / 4) ) * this.node.factor}px)`; 
-            rowEl.setAttribute("min", this.node.minrow);
-            rowEl.setAttribute("max", this.node.maxrow);
-            rowEl.setAttribute("value", this.node.row);
+                this.rowEl.style.display = "none";
+            this.rowEl.style.left = `calc(50% + ${((this.node.w / 4) + 6) * this.node.factor}px)`;
+            this.rowEl.style.top = `calc(50% - ${(((this.node.h - this.node.row) / 4) ) * this.node.factor}px)`; 
+            this.rowEl.setAttribute("min", this.node.minrow);
+            this.rowEl.setAttribute("max", this.node.maxrow);
+            this.rowEl.setAttribute("value", this.node.row);
         }
-        if(col2El){
+        if(this.col2El){
             if (this.node.col2)
-                col2El.style.display = "block";
+                this.col2El.style.display = "block";
             else 
-                col2El.style.display = "none";
-            col2El.style.top = `calc(50% - ${((this.node.h / 4) + 7) * this.node.factor}px)`;
-            col2El.style.left = `calc(50% - ${(((this.node.w - this.node.col2) / 4 - this.node.col / 2) ) * this.node.factor}px)`; 
-            col2El.setAttribute("min", this.node.mincol2);
-            col2El.setAttribute("max", this.node.maxcol2);
-            col2El.setAttribute("value", this.node.col2);
+                this.col2El.style.display = "none";
+            this.col2El.style.top = `calc(50% - ${((this.node.h / 4) + 7) * this.node.factor}px)`;
+            this.col2El.style.left = `calc(50% - ${(((this.node.w - this.node.col2) / 4 - this.node.col / 2) ) * this.node.factor}px)`; 
+            this.col2El.setAttribute("min", this.node.mincol2);
+            this.col2El.setAttribute("max", this.node.maxcol2);
+            this.col2El.setAttribute("value", this.node.col2);
         }
-        if(row2El){
+        if(this.row2El){
             if (this.node.row2)
-                row2El.style.display = "block";
+                this.row2El.style.display = "block";
             else 
-                row2El.style.display = "none";
-            row2El.style.left = `calc(50% + ${((this.node.w / 4) + 6) * this.node.factor}px)`;
-            row2El.style.top = `calc(50% - ${(((this.node.h - this.node.row2) / 4 - this.node.row / 2) ) * this.node.factor}px)`;
-            row2El.setAttribute("min", this.node.minrow2);
-            row2El.setAttribute("max", this.node.maxrow2);
-            row2El.setAttribute("value", this.node.row2);
+                this.row2El.style.display = "none";
+            this.row2El.style.left = `calc(50% + ${((this.node.w / 4) + 6) * this.node.factor}px)`;
+            this.row2El.style.top = `calc(50% - ${(((this.node.h - this.node.row2) / 4 - this.node.row / 2) ) * this.node.factor}px)`;
+            this.row2El.setAttribute("min", this.node.minrow2);
+            this.row2El.setAttribute("max", this.node.maxrow2);
+            this.row2El.setAttribute("value", this.node.row2);
         }
     }
 
