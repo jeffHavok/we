@@ -10,7 +10,6 @@ function calcNodeGrid(node, paddingNeeded){
         stepX = (node.w - (node.col + node.col2)) / (node.grid[0] - 2);
     if (node.row2 && node.grid[1] > 2)
         stepY = (node.h - (node.row + node.row2)) / (node.grid[1] - 2);
-    console.log(stepX, stepY ); 
     node.gridPts = Array.from(Array(node.grid[0]), () => new Array(node.grid[1]));
     
     for (let j = 0; j < node.grid[0]; j++){      
@@ -408,23 +407,45 @@ class WE {
     }
 
     setParam(param = "height", value, inverted){
+        let oldVal = 0; 
+        let multX = (this.node.grid[0] | 0);
+        if (this.node.col)
+            multX--;
+        if (this.node.col2)
+            multX--;
+        let multY = (this.node.grid[1] | 0);
+        if (this.node.row)
+            multY--;
+        if (this.node.row2)
+            multY--;
+        let newMinX = ((this.node.col | 0) + (this.node.col2 | 0) + 10 * multX); 
+        let newMinY = ((this.node.row | 0) + (this.node.row2 | 0) + 10 * multY); 
+        let capX = this.node.w - newMinX;
+        let capY = this.node.h - newMinY;
+        console.log(capX, capY); 
         switch (param) {
             case "height":
+                oldVal = this.node.h; 
                 this.node.h = this.clamp(value, this.node.minh, this.node.maxh)
                 break;
             case "width":
+                oldVal = this.node.w;
                 this.node.w = this.clamp(value, this.node.minw, this.node.maxw)
                 break;
             case "col":
+                oldVal = this.node.col;
                 this.node.col = this.clamp(value, this.node.mincol, this.node.maxcol)
                 break;
             case "row":
+                oldVal = this.node.row;
                 this.node.row = this.clamp(value, this.node.minrow, this.node.maxrow)
                 break;
             case "col2":
+                oldVal = this.node.col2;
                 this.node.col2 = this.clamp(value, this.node.mincol2, this.node.maxcol2)
                 break;
             case "row2":
+                oldVal = this.node.row2;
                 this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
                 break;
             case "dpi":
