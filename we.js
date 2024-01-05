@@ -159,59 +159,60 @@ function drawNodeTree(node, ctx, firstEntry = false){
     ctx.strokeStyle = "#0006";
 
     if (firstEntry){
+        node.invFactor = 7 / node.factor;
         ctx.beginPath();
 
         ctx.moveTo(node.bb.x1, node.bb.y1);     
-        ctx.lineTo(node.bb.x1, node.bb.y1 - 30 * node.factor);
+        ctx.lineTo(node.bb.x1, node.bb.y1 - (30 * node.invFactor) * node.factor);
         ctx.moveTo(node.bb.x2, node.bb.y1);
-        ctx.lineTo(node.bb.x2, node.bb.y1 - 30 * node.factor);
-        ctx.moveTo(node.bb.x1, node.bb.y1 - 28 * node.factor);
-        ctx.lineTo(node.bb.x2, node.bb.y1 - 28 * node.factor);
+        ctx.lineTo(node.bb.x2, node.bb.y1 - (30 * node.invFactor) * node.factor);
+        ctx.moveTo(node.bb.x1, node.bb.y1 - (28 * node.invFactor) * node.factor);
+        ctx.lineTo(node.bb.x2, node.bb.y1 - (28 * node.invFactor) * node.factor);
 
         ctx.moveTo(node.bb.x2, node.bb.y1);
-        ctx.lineTo(node.bb.x2 + 30 * node.factor, node.bb.y1);
+        ctx.lineTo(node.bb.x2 + (30 * node.invFactor) * node.factor, node.bb.y1);
         ctx.moveTo(node.bb.x2, node.bb.y2);
-        ctx.lineTo(node.bb.x2 + 30 * node.factor, node.bb.y2);
-        ctx.moveTo(node.bb.x2 + 28 * node.factor, node.bb.y1);
-        ctx.lineTo(node.bb.x2 + 28 * node.factor, node.bb.y2);
+        ctx.lineTo(node.bb.x2 + (30 * node.invFactor) * node.factor, node.bb.y2);
+        ctx.moveTo(node.bb.x2 + (28 * node.invFactor) * node.factor, node.bb.y1);
+        ctx.lineTo(node.bb.x2 + (28 * node.invFactor) * node.factor, node.bb.y2);
 
         if (node.col){
             ctx.moveTo(node.bb.x1 + node.col * node.factor, node.bb.y1);
-            ctx.lineTo(node.bb.x1 + node.col * node.factor, node.bb.y1 - 15 * node.factor); 
-            ctx.moveTo(node.bb.x1, node.bb.y1 - 13 * node.factor);
-            ctx.lineTo(node.bb.x2, node.bb.y1 - 13 * node.factor);
+            ctx.lineTo(node.bb.x1 + node.col * node.factor, node.bb.y1 - (15 * node.invFactor) * node.factor); 
+            ctx.moveTo(node.bb.x1, node.bb.y1 - (13 * node.invFactor) * node.factor);
+            ctx.lineTo(node.bb.x2, node.bb.y1 - (13 * node.invFactor) * node.factor);
         }
 
         ctx.fillStyle = "#0006";
         if (node.col && !node.col2){
             ctx.fillText((  node.w - node.col), 
                             node.bb.x2 - ((node.w - node.col) * node.factor) / 2,
-                            node.bb.y1 - 15 * node.factor);
+                            node.bb.y1 - (15 * node.invFactor) * node.factor);
         }
         if (node.col && node.col2){
             ctx.moveTo(node.bb.x1 + (node.col + node.col2) * node.factor, node.bb.y1);
-            ctx.lineTo(node.bb.x1 + (node.col + node.col2) * node.factor, node.bb.y1 - 15 * node.factor); 
+            ctx.lineTo(node.bb.x1 + (node.col + node.col2) * node.factor, node.bb.y1 - (15 * node.invFactor) * node.factor); 
             ctx.fillText((  node.w - node.col - node.col2), 
                             node.bb.x2 - ((node.w - node.col - node.col2) * node.factor) / 2,
-                            node.bb.y1 - 15 * node.factor);
+                            node.bb.y1 - (15 * node.invFactor) * node.factor);
         }
         if (node.row){
             ctx.moveTo(node.bb.x2, node.bb.y1 + node.row * node.factor);
-            ctx.lineTo(node.bb.x2 + 15 * node.factor, node.bb.y1 + node.row * node.factor);
-            ctx.moveTo(node.bb.x2 + 13 * node.factor, node.bb.y1);
-            ctx.lineTo(node.bb.x2 + 13 * node.factor, node.bb.y2);   
+            ctx.lineTo(node.bb.x2 + (15 * node.invFactor) * node.factor, node.bb.y1 + node.row * node.factor);
+            ctx.moveTo(node.bb.x2 + (13 * node.invFactor) * node.factor, node.bb.y1);
+            ctx.lineTo(node.bb.x2 + (13 * node.invFactor) * node.factor, node.bb.y2);   
         }
         if (node.row && !node.row2){
             ctx.fillText((  node.h - node.row), 
-                            node.bb.x2 + 20 * node.factor, 
+                            node.bb.x2 + (20 * node.invFactor) * node.factor, 
                             node.bb.y2 - ((node.h - node.row) * node.factor) / 2);
         }
         if (node.row && node.row2){
             ctx.fillText((  node.h - node.row - node.row2), 
-                            node.bb.x2 + 20 * node.factor, 
+                            node.bb.x2 + (20 * node.invFactor) * node.factor, 
                             node.bb.y2 - ((node.h - node.row - node.row2) * node.factor) / 2);
             ctx.moveTo(node.bb.x2, node.bb.y1 + (node.row + node.row2) * node.factor);
-            ctx.lineTo(node.bb.x2 + 15 * node.factor, node.bb.y1 + (node.row + node.row2) * node.factor);
+            ctx.lineTo(node.bb.x2 + (15 * node.invFactor) * node.factor, node.bb.y1 + (node.row + node.row2) * node.factor);
         }
 
         ctx.closePath();
@@ -406,6 +407,37 @@ class WE {
         return Math.max(Math.min(val, max), min); 
     }
 
+    calcNewMax(){
+        let multX = 1;
+        let multY = 1;
+        if (this.node.grid){
+            multX = this.node.grid[0];
+            if (this.node.col)
+                multX--;
+            if (this.node.col2)
+                multX--;
+            multY = (this.node.grid[1] | 0);
+            if (this.node.row)
+                multY--;
+            if (this.node.row2)
+                multY--;
+        }
+        
+        let newMinW = ((this.node.col | 0) + (this.node.col2 | 0) + 10 * multX);
+        let newMinH = ((this.node.row | 0) + (this.node.row2 | 0) + 10 * multY);
+        let newMaxCol = (this.node.w - (this.node.col2 | 0) - 10 * multX);
+        let newMaxCol2 = (this.node.w - (this.node.col | 0) - 10 * multX);
+        let newMaxRow = (this.node.h - (this.node.row2 | 0) - 10 * multX);
+        let newMaxRow2 = (this.node.h - (this.node.row | 0) - 10 * multX);
+        console.log(newMinW, newMinH, newMaxCol, newMaxCol2, newMaxRow, newMaxRow2); 
+        this.wEl.setAttribute("min", newMinW); 
+        this.hEl.setAttribute("min", newMinH); 
+        this.colEl.setAttribute("max", newMaxCol); 
+        this.col2El.setAttribute("max", newMaxCol2); 
+        this.rowEl.setAttribute("max", newMaxRow); 
+        this.row2El.setAttribute("max", newMaxRow2); 
+    }
+
     setParam(param = "height", value, inverted){
         let oldVal = 0; 
         let multX = 1;
@@ -426,6 +458,9 @@ class WE {
         let newMinY = ((this.node.row | 0) + (this.node.row2 | 0) + 10 * multY); 
         let capX = this.node.w - newMinX;
         let capY = this.node.h - newMinY;
+        
+        this.calcNewMax();
+
         switch (param) {
             case "height":
                 if (capY > 0) 
@@ -465,7 +500,7 @@ class WE {
             case "row2":
                 if (capY > 0)  
                     this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
-                else if ((this.node.ro2 - value) > 0)
+                else if ((this.node.row2 - value) > 0)
                     this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
                 this.row2El.value = this.node.row2;
                 break;
@@ -531,14 +566,14 @@ class WE {
 
         if (this.hEl){
             this.hEl.style.display = "block";
-            this.hEl.style.left = `calc(50% + ${((this.node.w / 4) + 14)  * this.node.factor}px)`;
+            this.hEl.style.left = `calc(50% + ${((this.node.w / 4) + (14 * this.node.invFactor))  * this.node.factor}px)`;
             this.hEl.setAttribute("min", this.node.minh);
             this.hEl.setAttribute("max", this.node.maxh);
             this.hEl.setAttribute("value", this.node.h);
         }
         if (this.wEl){
             this.wEl.style.display = "block";
-            this.wEl.style.top = `calc(50% - ${((this.node.h / 4) + 14) * this.node.factor}px)`; 
+            this.wEl.style.top = `calc(50% - ${((this.node.h / 4) + (14 * this.node.invFactor)) * this.node.factor}px)`; 
             this.wEl.setAttribute("min", this.node.minw);
             this.wEl.setAttribute("max", this.node.maxw);
             this.wEl.setAttribute("value", this.node.w);
@@ -548,7 +583,7 @@ class WE {
                 this.colEl.style.display = "block";
             else 
                 this.colEl.style.display = "none";
-            this.colEl.style.top = `calc(50% - ${((this.node.h / 4) + 7) * this.node.factor}px)`;
+            this.colEl.style.top = `calc(50% - ${((this.node.h / 4) + (7 * this.node.invFactor)) * this.node.factor}px)`;
             this.colEl.style.left = `calc(50% - ${(((this.node.w - this.node.col) / 4) ) * this.node.factor}px)`; 
             this.colEl.setAttribute("min", this.node.mincol);
             this.colEl.setAttribute("max", this.node.maxcol);
@@ -559,7 +594,7 @@ class WE {
                 this.rowEl.style.display = "block";
             else 
                 this.rowEl.style.display = "none";
-            this.rowEl.style.left = `calc(50% + ${((this.node.w / 4) + 6) * this.node.factor}px)`;
+            this.rowEl.style.left = `calc(50% + ${((this.node.w / 4) + (6 * this.node.invFactor)) * this.node.factor}px)`;
             this.rowEl.style.top = `calc(50% - ${(((this.node.h - this.node.row) / 4) ) * this.node.factor}px)`; 
             this.rowEl.setAttribute("min", this.node.minrow);
             this.rowEl.setAttribute("max", this.node.maxrow);
@@ -570,7 +605,7 @@ class WE {
                 this.col2El.style.display = "block";
             else 
                 this.col2El.style.display = "none";
-            this.col2El.style.top = `calc(50% - ${((this.node.h / 4) + 7) * this.node.factor}px)`;
+            this.col2El.style.top = `calc(50% - ${((this.node.h / 4) + (7 * this.node.invFactor)) * this.node.factor}px)`;
             this.col2El.style.left = `calc(50% - ${(((this.node.w - this.node.col2) / 4 - this.node.col / 2) ) * this.node.factor}px)`; 
             this.col2El.setAttribute("min", this.node.mincol2);
             this.col2El.setAttribute("max", this.node.maxcol2);
@@ -581,7 +616,7 @@ class WE {
                 this.row2El.style.display = "block";
             else 
                 this.row2El.style.display = "none";
-            this.row2El.style.left = `calc(50% + ${((this.node.w / 4) + 6) * this.node.factor}px)`;
+            this.row2El.style.left = `calc(50% + ${((this.node.w / 4) + (6 * this.node.invFactor)) * this.node.factor}px)`;
             this.row2El.style.top = `calc(50% - ${(((this.node.h - this.node.row2) / 4 - this.node.row / 2) ) * this.node.factor}px)`;
             this.row2El.setAttribute("min", this.node.minrow2);
             this.row2El.setAttribute("max", this.node.maxrow2);

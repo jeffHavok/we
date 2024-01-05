@@ -5,7 +5,8 @@ function loadWeWindow(url){
         .then(data => {
             we = new WE(data,2);
             we.init("editor-wrap");
-            we.updateInputs();   
+            we.updateInputs();  
+            console.log(we); 
         })
 }
 document.addEventListener('DOMContentLoaded', () => {
