@@ -465,7 +465,7 @@ class WE {
             case "row2":
                 if (capY > 0)  
                     this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
-                else if ((this.node.ro2 - value) > 0)
+                else if ((this.node.row2 - value) > 0)
                     this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
                 this.row2El.value = this.node.row2;
                 break;
