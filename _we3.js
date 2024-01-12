@@ -93,7 +93,6 @@ class WE{
     scaleGeometry(node){
         if (!this.node.factor)
             this.node.factor = this.node.dpi;  
-        
         for (let key in node.geom) {
             node.geom[key] *= this.node.factor;
         }
@@ -122,7 +121,7 @@ class WE{
                         y1: 0,
                         x2: this.node.params.w,
                         y2: this.node.params.h };
-            node.geom = node.bb; 
+            node.geom = {...node.bb}; 
         } else {
             if (parent.dir == "h"){
                 let pw = parent.geom.x2 - parent.geom.x1;
@@ -208,13 +207,14 @@ class WE{
     
     drawHelpers(){
         this.ctx.strokeStyle = "#000";
-        this.ctx.lineWidth = this.dpi; 
+        this.ctx.lineWidth = this.dpi * 2; 
         this.ctx.beginPath();
 
         let multiplier = 1; 
 
         if (this.helpers.length)
             multiplier *= 2; 
+
         this.ctx.moveTo(this.node.geom.x1, this.node.geom.y1);
         this.ctx.lineTo(this.node.geom.x1, this.node.geom.y1 - this.helpersSize * multiplier);
         this.ctx.moveTo(this.node.geom.x2, this.node.geom.y1);
@@ -229,23 +229,32 @@ class WE{
         this.ctx.moveTo(this.node.geom.x2 + this.helpersSize * multiplier * 0.95, this.node.geom.y1);
         this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * multiplier * 0.95, this.node.geom.y2);
 
-        this.helpers.forEach(helper => {
-            this.ctx.moveTo(helper.x1, helper.y1);
-            this.ctx.lineTo(helper.x2, helper.y2);
-            if (helper.name.split("-", 1) == "col"){
-                this.ctx.moveTo(this.node.geom.x1, this.node.geom.y1 - this.helpersSize * 0.9);
-                this.ctx.lineTo(this.node.geom.x2, this.node.geom.y1 - this.helpersSize * 0.9);
+        this.helpers.forEach((helper, i) => {
+            if (helper.dir == "col"){
+                this.ctx.moveTo(helper.pos * this.node.factor, this.node.geom.y1);
+                this.ctx.lineTo(helper.pos * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.95);
+                this.ctx.moveTo((helper.pos + helper.value) * this.node.factor, this.node.geom.y1);
+                this.ctx.lineTo((helper.pos + helper.value) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.95);
+                this.ctx.moveTo((helper.pos) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.85);
+                this.ctx.lineTo((helper.pos + helper.value) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.85);
             }
-            if (helper.name.split("-", 1) == "row"){
-                this.ctx.moveTo(this.node.geom.x2 + this.helpersSize * 0.9, this.node.geom.y1);
-                this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * 0.9, this.node.geom.y2);
+            if (helper.dir == "row"){
+                this.ctx.moveTo(this.node.geom.x2, helper.pos * this.node.factor);
+                this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * 0.95, helper.pos * this.node.factor);
+                this.ctx.moveTo(this.node.geom.x2, (helper.pos + helper.value) * this.node.factor);
+                this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * 0.95, (helper.pos + helper.value) * this.node.factor);
+                this.ctx.moveTo(this.node.geom.x2 + this.helpersSize * 0.85, (helper.pos) * this.node.factor);
+                this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * 0.85, (helper.pos + helper.value) * this.node.factor);
             }
-        });
+        })
+
         this.ctx.closePath(); 
         this.ctx.stroke();
     }
 
     calcHelpers(){
+        this.helpers = []; 
+
         if (this.node.params.col.length > 0){
             if (!this.node.params.colOrder){
                 this.node.params.colOrder = Array.from(Array(this.node.params.col.length).keys())
@@ -327,13 +336,13 @@ class WE{
     }
 
     update(){
+        this.updateCanvas();
         this.calcNode(this.node);
         this.scaleGeometry(this.node);
         this.calcOffset(this.node); 
-        this.updateCanvas();
         this.drawNode(this.node); 
-        this.calcHelpers(this.node);
-        //this.drawHelpers(this.node);
+        this.calcHelpers();
+        this.drawHelpers();
     }
 
     init(){
@@ -352,7 +361,8 @@ class WE{
         this.root.appendChild(this.canvas, this.hEl, this.wEl);
         this.canvas.width = this.canvas.clientWidth * this.dpi;
         this.canvas.height = this.canvas.clientHeight * this.dpi;
-        this.node.factor = 2 * this.dpi;
+        this.node.factor = Math.min(    Math.floor(this.canvas.width / (this.node.params.w + 80)),
+                                        Math.floor(this.canvas.height / (this.node.params.h + 80))) 
         this.helpersSize *= this.node.factor; 
         this.ctx = this.canvas.getContext("2d");  
         this.update();
@@ -363,10 +373,7 @@ class WE{
 document.addEventListener("DOMContentLoaded", () => {
     let we = new WE("we-cont", win2); 
     we.init();
-    setTimeout(() => {
-        console.log(we); 
-    }, 200);
-
+    console.log(we); 
     addEventListener("resize", (event) => {
         we.update(); 
     });

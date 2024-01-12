@@ -5,8 +5,9 @@ html,body{
     margin: 0;
 }
 body{
+    box-sizing: border-box;
     min-height: 100%;
-    pd: 40px;
+    padding: 40px;
 }
 #we-cont{
     display: flex;  
@@ -23,5 +24,4 @@ body{
 #we-cont > input[type=number]{
     position: absolute;
     z-index: 1;
-    
 }
