@@ -1,0 +1,27 @@
+html,body{
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+body{
+    min-height: 100%;
+    pd: 40px;
+}
+#we-cont{
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+    border: 1px solid gray; 
+    position: relative;
+    height: 100%;
+}
+#we-cont > canvas{
+    width: 100%;
+    height: 100%;
+}
+#we-cont > input[type=number]{
+    position: absolute;
+    z-index: 1;
+    
+}

@@ -10,6 +10,8 @@ function calcNodeGrid(node, paddingNeeded){
         stepX = (node.w - (node.col + node.col2)) / (node.grid[0] - 2);
     if (node.row2 && node.grid[1] > 2)
         stepY = (node.h - (node.row + node.row2)) / (node.grid[1] - 2);
+    if (node.col3 && node.grid[0] > 3)
+        stepX = (node.w - (node.col + node.col2 + node.col3)) / (node.grid[0] - 3);
     node.gridPts = Array.from(Array(node.grid[0]), () => new Array(node.grid[1]));
     
     for (let j = 0; j < node.grid[0]; j++){      
@@ -37,6 +39,24 @@ function calcNodeGrid(node, paddingNeeded){
                         node.gridPts[j][k].x1 = 0;
                         node.gridPts[j][k].x2 = node.col; 
                     }    
+                    if (node.col3){
+                        if (j > 2){
+                            node.gridPts[j][k].x1 = stepX * (j - 3) + node.col + node.col2 + node.col3;
+                            node.gridPts[j][k].x2 = stepX * (j - 1) + node.col + node.col2 + node.col3;
+                        } 
+                        if (j == 2){
+                            node.gridPts[j][k].x1 = node.col + node.col2;
+                            node.gridPts[j][k].x2 = node.col + node.col2 + node.col3; 
+                        }    
+                        if (j == 1){
+                            node.gridPts[j][k].x1 = node.col;
+                            node.gridPts[j][k].x2 = node.col + node.col2; 
+                        }    
+                        if (j == 0){
+                            node.gridPts[j][k].x1 = 0;
+                            node.gridPts[j][k].x2 = node.col; 
+                        }    
+                    }
                 }
             } else {
                 node.gridPts[j][k].x1 = stepX * j;
@@ -194,6 +214,13 @@ function drawNodeTree(node, ctx, firstEntry = false){
             ctx.lineTo(node.bb.x1 + (node.col + node.col2) * node.factor, node.bb.y1 - (15 * node.invFactor) * node.factor); 
             ctx.fillText((  node.w - node.col - node.col2), 
                             node.bb.x2 - ((node.w - node.col - node.col2) * node.factor) / 2,
+                            node.bb.y1 - (15 * node.invFactor) * node.factor);
+        }
+        if (node.col && node.col3){
+            ctx.moveTo(node.bb.x1 + (node.col + node.col3) * node.factor, node.bb.y1);
+            ctx.lineTo(node.bb.x1 + (node.col + node.col3) * node.factor, node.bb.y1 - (15 * node.invFactor) * node.factor); 
+            ctx.fillText((  node.w - node.col - node.col3), 
+                            node.bb.x2 - ((node.w - node.col - node.col3) * node.factor) / 2,
                             node.bb.y1 - (15 * node.invFactor) * node.factor);
         }
         if (node.row){
@@ -416,6 +443,8 @@ class WE {
                 multX--;
             if (this.node.col2)
                 multX--;
+            if (this.node.col3)
+                multX--;
             multY = (this.node.grid[1] | 0);
             if (this.node.row)
                 multY--;
@@ -427,6 +456,7 @@ class WE {
         let newMinH = ((this.node.row | 0) + (this.node.row2 | 0) + 10 * multY);
         let newMaxCol = (this.node.w - (this.node.col2 | 0) - 10 * multX);
         let newMaxCol2 = (this.node.w - (this.node.col | 0) - 10 * multX);
+        let newMaxCol3 = (this.node.w - (this.node.col | 0) - 10 * multX);
         let newMaxRow = (this.node.h - (this.node.row2 | 0) - 10 * multX);
         let newMaxRow2 = (this.node.h - (this.node.row | 0) - 10 * multX);
         console.log(newMinW, newMinH, newMaxCol, newMaxCol2, newMaxRow, newMaxRow2); 
@@ -448,13 +478,15 @@ class WE {
                 multX--;
             if (this.node.col2)
                 multX--;
+            if (this.node.col3)
+                multX--;
             multY = (this.node.grid[1] | 0);
             if (this.node.row)
                 multY--;
             if (this.node.row2)
                 multY--;
         }
-        let newMinX = ((this.node.col | 0) + (this.node.col2 | 0) + 10 * multX); 
+        let newMinX = ((this.node.col | 0) + (this.node.col2 | 0) + (this.node.col3 | 0) + 10 * multX); 
         let newMinY = ((this.node.row | 0) + (this.node.row2 | 0) + 10 * multY); 
         let capX = this.node.w - newMinX;
         let capY = this.node.h - newMinY;
@@ -497,6 +529,13 @@ class WE {
                     this.node.col2 = this.clamp(value, this.node.mincol2, this.node.maxcol2)
                 this.col2El.value = this.node.col2;
                 break;
+            case "col3":
+                if (capX > 0)  
+                    this.node.col3 = this.clamp(value, this.node.mincol3, this.node.maxcol3)
+                else if ((this.node.col3 - value) > 0)
+                    this.node.col3 = this.clamp(value, this.node.mincol3, this.node.maxcol3)
+                this.col3El.value = this.node.col3;
+                break;
             case "row2":
                 if (capY > 0)  
                     this.node.row2 = this.clamp(value, this.node.minrow2, this.node.maxrow2)
@@ -525,6 +564,8 @@ class WE {
             this.node.minrow = 10;
         if (isNaN(this.node.mincol2))
             this.node.mincol2 = 10;
+        if (isNaN(this.node.mincol3))
+            this.node.mincol3 = 10;
         if (isNaN(this.node.minrow2))
             this.node.minrow2 = 10;
         
@@ -562,6 +603,7 @@ class WE {
         this.colEl = document.getElementById("we-col"), 
         this.rowEl = document.getElementById("we-row"),
         this.col2El = document.getElementById("we-col2"), 
+        this.col3El = document.getElementById("we-col3"), 
         this.row2El = document.getElementById("we-row2");
 
         if (this.hEl){
@@ -610,6 +652,17 @@ class WE {
             this.col2El.setAttribute("min", this.node.mincol2);
             this.col2El.setAttribute("max", this.node.maxcol2);
             this.col2El.setAttribute("value", this.node.col2);
+        }
+        if(this.col3El){
+            if (this.node.col2)
+                this.col3El.style.display = "block";
+            else 
+                this.col3El.style.display = "none";
+            this.col3El.style.top = `calc(50% - ${((this.node.h / 4) + (7 * this.node.invFactor)) * this.node.factor}px)`;
+            this.col3El.style.left = `calc(50% - ${(((this.node.w - this.node.col2) / 4 - this.node.col / 2) ) * this.node.factor}px)`; 
+            this.col3El.setAttribute("min", this.node.mincol2);
+            this.col3El.setAttribute("max", this.node.maxcol2);
+            this.col3El.setAttribute("value", this.node.col2);
         }
         if(this.row2El){
             if (this.node.row2)
