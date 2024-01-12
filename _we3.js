@@ -245,38 +245,54 @@ class WE{
         this.ctx.stroke();
     }
 
-    calcHelpers(node, firstEntry = true){
-        if (firstEntry){
-            this.helpers = [];
-
-        } else {
-            if (typeof node.size == "string"){
-                let needRecalc = true; 
-                this.helpers.forEach((item) => {
-                    if (item.name == node.size)
-                        needRecalc = false; 
-                })
-
-                if (needRecalc){
-                    let context = this.parseParam(node);
-                    let helper = {name: node.size, x1: 0, x2: 0, y1: 0, y2: 0};
-                    if (context[1] == "col"){
-                        helper.x1 = node.bb.x2 * this.node.factor; 
-                        helper.x2 = node.bb.x2 * this.node.factor; 
-                        helper.y1 = this.node.bb.y1 + this.node.offsetY;
-                        helper.y1 = this.node.bb.y1 - this.helpersSize;
-                    } else if (context[1] == "row"){
-                        helper.y1 = node.bb.y1 * this.node.factor; 
-                        helper.y2 = node.bb.y1 * this.node.factor; 
-                        helper.x1 = this.node.bb.x2;
-                        helper.x2 = this.node.bb.x2 + this.helpersSize;
-                    }
-                    this.helpers.push(helper);
-                }
+    calcHelpers(){
+        if (this.node.params.col.length > 0){
+            if (!this.node.params.colOrder){
+                this.node.params.colOrder = Array.from(Array(this.node.params.col.length).keys())
+                this.node.params.colOrder.push(-1);
             }
         }
-        if (node.child)
-            node.child.forEach((e) => this.calcHelpers(e, false));
+        if (this.node.params.row.length > 0){
+            if (!this.node.params.rowOrder){
+                this.node.params.rowOrder = Array.from(Array(this.node.params.row.length).keys())
+                this.node.params.rowOrder.push(-1);
+            }
+        }
+        this.node.params.colOrder.forEach((order, i) => {
+            let helper = {dir: "col"}; 
+            if (order < 0){
+                helper.type = "text";
+                let fixedSize = this.node.params.col.reduce((acc, v) => acc+= v, 0);
+                helper.value =  (this.node.params.w - fixedSize) / 
+                                (this.node.params.colOrder.length - this.node.params.col.length);
+            } else {
+                helper.type = "input";
+                helper.value = this.node.params.col[order]; 
+                
+            }
+            helper.pos = 0; 
+            for (let k = 0; k < i; k++) {
+                helper.pos += this.helpers[k].value; 
+            }
+            this.helpers.push(helper); 
+        })
+        this.node.params.rowOrder.forEach((order, i) => {
+            let helper = {dir: "row"}; 
+            if (order < 0){
+                helper.type = "text";
+                let fixedSize = this.node.params.row.reduce((acc, v) => acc+= v, 0);
+                helper.value =  (this.node.params.h - fixedSize) / 
+                                (this.node.params.rowOrder.length - this.node.params.row.length);
+            } else {
+                helper.type = "input";
+                helper.value = this.node.params.row[order]; 
+            }
+            helper.pos = 0; 
+            for (let k = 0; k < i; k++) {
+                helper.pos += this.helpers[k + this.node.params.colOrder.length].value; 
+            }
+            this.helpers.push(helper); 
+        })
     }
 
     drawNode(node, firstEntry = true){
@@ -317,7 +333,7 @@ class WE{
         this.updateCanvas();
         this.drawNode(this.node); 
         this.calcHelpers(this.node);
-        this.drawHelpers(this.node);
+        //this.drawHelpers(this.node);
     }
 
     init(){
@@ -347,7 +363,10 @@ class WE{
 document.addEventListener("DOMContentLoaded", () => {
     let we = new WE("we-cont", win2); 
     we.init();
-    console.log(we.node); 
+    setTimeout(() => {
+        console.log(we); 
+    }, 200);
+
     addEventListener("resize", (event) => {
         we.update(); 
     });
