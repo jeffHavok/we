@@ -3,25 +3,61 @@ html,body{
     width: 100%;
     padding: 0;
     margin: 0;
+    overflow: hidden;
 }
 body{
     box-sizing: border-box;
     min-height: 100%;
-    padding: 40px;
+    padding: 10px;
+}
+
+/* ------ */
+
+#we-cont input[type=number].urgent{
+    border: 2px solid #ce2020;
+}
+#we-cont .tooltip{
+    font-family: sans-serif;
+    font-weight: 700;
+    background-color: #ce2020;
+    white-space: nowrap;
+    color: #FFF;
+    padding: 2px 6px;
+    line-height: normal;
+    vertical-align: middle;
+    font-size: 14px;
+    border-radius: 6px;
+    position: absolute;
+    left: -100px;
+    top: -100px;
+    z-index: 2;
+    transform: translate(-50%, calc(-50% + 30px));
 }
 #we-cont{
     display: flex;  
     justify-content: center;
     align-items: center;
-    border: 1px solid gray; 
     position: relative;
     height: 100%;
 }
-#we-cont > canvas{
+#we-cont canvas{
     width: 100%;
     height: 100%;
+    border: 1px solid gray; 
 }
-#we-cont > input[type=number]{
+#we-cont input[type=number]{
+    box-sizing: border-box;
+    border-radius: 20px; 
+    border: 1px solid #0006;
+    background-color: #fff;
+    color: #000;
+    font-family: sans-serif;
     position: absolute;
-    z-index: 1;
+    font-size: 18px;
+    padding: 6px;
+    text-align: center;
+    width: 68px; 
+    transform: translate(-50%, -50%);
+    left: 0;
+    right: 0;
 }
