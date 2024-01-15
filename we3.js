@@ -540,8 +540,11 @@ class WE{
             this.node.params.maxRow = [];
         if (!this.node.params.minRow)
             this.node.params.minRow = [];
-        this.initInputs(); 
-        this.update();
+        
+        setTimeout(() => {
+            this.initInputs(); 
+            this.update();  
+        }, 200);
     }
 }
 
