@@ -296,13 +296,14 @@ class WE{
         let res = 0; 
         if (value <= max && value >= min){
             res = value;
+            this.setRelief(el); 
         }
         else if (value < min){
-            this.setUrgent(el, "min", min)
+            setTimeout(() => {this.setUrgent(el, "min", min)}, 50);
             res = min;
         }
         else if (value > max){
-            this.setUrgent(el, "max", max)
+            setTimeout(() => {this.setUrgent(el, "max", max)}, 50);
             res = max;
         }
         res = parseInt(res); 
