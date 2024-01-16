@@ -4,17 +4,34 @@ html,body{
     padding: 0;
     margin: 0;
     overflow: hidden;
+    font-family: sans-serif;
 }
 body{
+    gap: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     box-sizing: border-box;
-    min-height: 100%;
     padding: 10px;
 }
 
 /* ------ */
 
 #we-cont input[type=number].urgent{
-    border: 2px solid #ce2020;
+    /* border: 2px solid #ce2020 !important; */
+    outline-color: #ce2020;
+    border-color: #ce2020;
+    overflow: hidden;
+}
+#test-area, #test-area-btn{
+    position: absolute;
+    left: 50%;
+    bottom: 40px;
+    transform: translate(-50%);
+}
+#test-area-btn{
+    bottom: 10px;
 }
 #we-cont .tooltip{
     font-family: sans-serif;
@@ -39,6 +56,9 @@ body{
     align-items: center;
     position: relative;
     height: 100%;
+    width: 100%;
+    max-height: 100%;
+    max-width: 100%;
 }
 #we-cont canvas{
     width: 100%;

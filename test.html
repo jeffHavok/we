@@ -5,9 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./we3.min.js"></script>
-    <link rel="stylesheet" href="./style2.css">
+    <link rel="stylesheet" href="./style3.css">
 </head>
 <body>
-    <div id="we-cont"></div>
+    <div id="we-cont">
+        <span id="test-area"></span>
+        <button id="test-area-btn">get area</button>
+    </div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let we = new WE("we-cont", win2); 
+        we.init();
+        addEventListener("resize", (e) => {
+            we.update(); 
+        });
+        
+        //--- get area ---//
+        console.log(we.getArea()); 
+        document.getElementById("test-area-btn").addEventListener('click', () =>{
+            let el = document.getElementById("test-area");
+            let str = "";
+            let area = we.getArea(); 
+            el.innerHTML = "";
+            area.w.forEach((value, i) => {
+                el.innerHTML += "<b>" + value + "</b> x <b>" + area.h[i] + "</b>";
+                i < (area.w.length - 1)
+                    ? el.innerHTML += " + "
+                    : el.innerHTML += " = "
+            })
+            el.innerHTML += "<b>" + area.area + "</b> cm&#178;"; 
+        })
+    });
+</script>
 </html>

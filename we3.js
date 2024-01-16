@@ -31,7 +31,8 @@ let win2 = {
         col: [40, 60],
         row: [100],
         colOrder: [-1,1,0],
-        rowOrder: [-1,0]
+        rowOrder: [-1,0],
+        areas: [{w:"col-x",h:"row-0"},{w:"col-0",h:"row-0"}],
     },
     pd: [2,2,2,2],
     gap: 2,
@@ -59,7 +60,7 @@ let win2 = {
                     size: "col-0",
                     pd: [3,3,3,3],
                     child: [{glass: true, triangle: "left"}],
-                },
+                }
             ]
         }
     ]
@@ -105,6 +106,36 @@ class WE{
         }
         if (node.child)
             node.child.forEach((e) => this.scaleGeometry(e));
+    }
+
+    getArea(){
+        let res = {
+            w: [],
+            h: [],
+            area: 0,
+        }; 
+        let fixedCol = this.node.params.w - this.node.params.col.reduce((acc, v) => acc + v, 0);
+        let fixedRow = this.node.params.h - this.node.params.row.reduce((acc, v) => acc + v, 0);
+        let autoCol = fixedCol / (this.node.params.colOrder.length - this.node.params.col.length)
+        let autoRow = fixedRow / (this.node.params.rowOrder.length - this.node.params.row.length)
+        if (this.node.params.areas){
+            this.node.params.areas.forEach((coords, i) => {
+                let dir = coords.w.split("-")[0];
+                let index = coords.w.split("-")[1];
+                index == "x"
+                    ? res.w.push(autoCol)
+                    : res.w.push((this.node.params[dir][index] || 0)); 
+                dir = coords.h.split("-")[0];
+                index = coords.h.split("-")[1];
+                index == "x"
+                    ? res.h.push(autoRow)
+                    : res.h.push((this.node.params[dir][index] || 0));
+                res.area += res.w[i] * res.h[i]; 
+            })
+        } else {
+            console.error("No area data specified!");
+        }
+        return(res); 
     }
 
     calcNode(node, parent = null, i = 0){
@@ -505,7 +536,7 @@ class WE{
 
         this.ctx.strokeStyle = "#000";
         this.ctx.lineWidth = this.dpi * 1.5; 
-        this.ctx.fillStyle = `hsl(${(node.bb.x2 / node.bb.y2) * 360 + node.bb.x1 * 3 }deg, 60%, 70%)`;
+        this.ctx.fillStyle = `hsl(${(node.bb.x2 / node.bb.y2) * 180 + node.bb.x1 * 2 }deg, 55%, 80%)`;
         this.ctx.fillRect(  node.geom.x1,
                             node.geom.y1,
                             node.geom.x2 - node.geom.x1,
@@ -547,8 +578,8 @@ class WE{
     }
 
     updateCanvas(){
-        this.canvas.width = this.canvas.clientWidth * this.dpi;
-        this.canvas.height = this.canvas.clientHeight * this.dpi;
+        this.canvas.width = this.root.clientWidth * this.dpi;
+        this.canvas.height = this.root.clientHeight * this.dpi;
         this.node.factor = Math.min(    Math.floor(this.canvas.width / (this.node.params.w + 80)),
                                         Math.floor(this.canvas.height / (this.node.params.h + 80))) 
         this.node.invFactor = 10 / this.node.factor; 
@@ -562,7 +593,7 @@ class WE{
         this.calcHelpers();
         this.drawNode(this.node); 
         this.drawHelpers();
-        this.updateInputs(); 
+        this.updateInputs();
     }
 
     init(){
@@ -606,11 +637,4 @@ class WE{
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    let we = new WE("we-cont", win2); 
-    we.init();
-    console.log(we); 
-    addEventListener("resize", (event) => {
-        we.update(); 
-    });
-});
+
