@@ -23,7 +23,7 @@
     ],
     "child": [
         {
-        "triangle": "right",
+        "triangle": "left",
         "glass": true
         }
     ]

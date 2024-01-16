@@ -259,7 +259,7 @@ let win2 = {
 }
 
 class WE{
-    constructor(rootId, node, dpi = 2, helpersSize = 10){
+    constructor(rootId, node, dpi = 2, helpersSize = 13){
         this.helpersSize = helpersSize; 
         this.helpers = [];
         this.node = node;
@@ -744,7 +744,10 @@ class WE{
 
         this.ctx.strokeStyle = "#000";
         this.ctx.lineWidth = this.dpi * 1.5; 
-        this.ctx.fillStyle = `hsl(${(node.bb.x2 / node.bb.y2) * 180 + node.bb.x1 * 2 }deg, 55%, 80%)`;
+        // this.ctx.fillStyle = `hsl(${(node.bb.x2 / node.bb.y2) * 180 + node.bb.x1 * 2 }deg, 55%, 80%)`;
+        this.ctx.fillStyle = "#eee8e0";
+        if (node.glass)
+            this.ctx.fillStyle = "#c0c8ef";
         this.ctx.fillRect(  node.geom.x1,
                             node.geom.y1,
                             node.geom.x2 - node.geom.x1,

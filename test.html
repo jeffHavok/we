@@ -18,10 +18,13 @@
         // --- fetching json --- //
         let params = (new URL(document.location)).searchParams;
         let jsonUrl = "./data/" + params.get("id") + ".json"; 
-        
+        fetch(jsonUrl)
+        .then(res => res.json())
+        .then(data => {
+            let we = new WE("we-cont", data); 
+            we.init(); 
+        })
         // --- init --- //
-        let we = new WE("we-cont", win15); 
-        we.init();
         addEventListener("resize", (e) => {
             we.update(); 
         });
