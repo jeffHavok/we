@@ -294,15 +294,15 @@ class WE{
         min = (min || 10);
         max = (max || 1000);
         let res = 0; 
-        if (value <= max && value >= min){
+        if (value < max && value > min){
             res = value;
             this.setRelief(el); 
         }
-        else if (value < min){
+        else if (value <= min){
             setTimeout(() => {this.setUrgent(el, "min", min)}, 50);
             res = min;
         }
-        else if (value > max){
+        else if (value >= max){
             setTimeout(() => {this.setUrgent(el, "max", max)}, 50);
             res = max;
         }
@@ -517,6 +517,33 @@ class WE{
                                 node.geom.y2 - node.geom.y1);
         if (node.child)
             node.child.forEach((e) => this.drawNode(e, false));
+        if (node.triangle){
+            this.ctx.beginPath();
+            switch (node.triangle) {
+                case "right":
+                    this.ctx.moveTo(node.geom.x1, node.geom.y1);
+                    this.ctx.lineTo(node.geom.x2, node.geom.y2 - (node.geom.y2 - node.geom.y1) / 2);
+                    this.ctx.lineTo(node.geom.x1, node.geom.y2);
+                    break;
+                case "left":
+                    this.ctx.moveTo(node.geom.x2, node.geom.y1);
+                    this.ctx.lineTo(node.geom.x1, node.geom.y2 - (node.geom.y2 - node.geom.y1) / 2);
+                    this.ctx.lineTo(node.geom.x2, node.geom.y2);
+                    break;
+                case "bottom":
+                    this.ctx.moveTo(node.geom.x1, node.geom.y1);
+                    this.ctx.lineTo(node.geom.x2 - (node.geom.x2 - node.geom.x1) / 2, node.geom.y2);
+                    this.ctx.lineTo(node.geom.x2, node.geom.y1);
+                    break;
+                case "top":
+                    this.ctx.moveTo(node.geom.x1, node.geom.y2);
+                    this.ctx.lineTo(node.geom.x2 - (node.geom.x2 - node.geom.x1) / 2, node.geom.y1);
+                    this.ctx.lineTo(node.geom.x2, node.geom.y2);
+                    break;
+            }
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
     }
 
     updateCanvas(){
