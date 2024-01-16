@@ -18,16 +18,14 @@
         // --- fetching json --- //
         let params = (new URL(document.location)).searchParams;
         let jsonUrl = "./data/" + params.get("id") + ".json"; 
+        let we = null;
         fetch(jsonUrl)
         .then(res => res.json())
         .then(data => {
-            let we = new WE("we-cont", data); 
+            we = new WE("we-cont", data); 
             we.init(); 
         })
-        // --- init --- //
-        addEventListener("resize", (e) => {
-            we.update(); 
-        });
+        addEventListener("resize", (e) => { we.update(); });
         //--- get area ---//
         document.getElementById("test-area-btn").addEventListener('click', () =>{
             let el = document.getElementById("test-area");
