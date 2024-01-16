@@ -48,7 +48,7 @@ let win2 = {
             child: [
                 {
                     pd: [3,3,3,3],
-                    child: [{glass: true}],
+                    child: [{glass: true, triangle: "right"}],
                 },
                 {
                     size: "col-1",
@@ -58,7 +58,7 @@ let win2 = {
                 {
                     size: "col-0",
                     pd: [3,3,3,3],
-                    child: [{glass: true}],
+                    child: [{glass: true, triangle: "left"}],
                 },
             ]
         }
@@ -311,34 +311,56 @@ class WE{
         return(res); 
     }
 
-    setParam(param = "height", value = 100){
+    setParam(param = "height", value = 100, limit = null){
         if (param == "height"){
-            this.node.params.h = this.validate( this.hEl, value, 
-                                            this.node.params.minh, 
-                                            this.node.params.maxh);
+            if (!limit){
+                this.node.params.h = this.validate( this.hEl, value, 
+                                                    this.node.params.minh, 
+                                                    this.node.params.maxh);
+            } else {
+                limit == "max"
+                    ? this.hEl.max = this.params.maxh = value
+                    : this.hEl.min = this.params.minh = value;
+            }
         } 
         else if (param == "width"){
-            this.node.params.w = this.validate( this.wEl, value, 
-                                            this.node.params.minw, 
-                                            this.node.params.maxw);
+            if (!limit){
+                this.node.params.w = this.validate( this.wEl, value, 
+                                                    this.node.params.minw, 
+                                                    this.node.params.maxw);
+            } else {
+                limit == "max"
+                    ? this.wEl.max = this.params.maxw = value
+                    : this.wEl.min = this.params.minw = value;
+            }
         }
         else{
             let dir = param.split("-")[0];
             let index = param.split("-")[1]; 
             if (dir == "col"){
-                this.node.params.col[index] = this.validate( this.colEl[index], value, 
-                                                this.node.params.minCol[index], 
-                                                this.node.params.maxCol[index]);
+                if (!limit){
+                    this.node.params.col[index] = this.validate( this.colEl[index], value, 
+                                                    this.node.params.minCol[index], 
+                                                    this.node.params.maxCol[index]);
+                } else {
+                    limit == "max"
+                        ? this.colEl[index].max = this.params.maxCol[index] = value
+                        : this.colEl[index].min = this.params.minCol[index] = value;
+                }
             }
             if (dir == "row"){
-                this.node.params.row[index] = this.validate( this.rowEl[index], value, 
-                                                this.node.params.minRow[index], 
-                                                this.node.params.maxRow[index]);
+                if (!limit){
+                    this.node.params.row[index] = this.validate( this.rowEl[index], value, 
+                                                    this.node.params.minRow[index], 
+                                                    this.node.params.maxRow[index]);
+                } else {
+                    limit == "max"
+                        ? this.rowEl[index].max = this.params.maxRow[index] = value
+                        : this.rowEl[index].min = this.params.minRow[index] = value;
+                }
             }
         }
-        // console.warn("Wrong param " + param + " ; cannot be set :( "); 
         this.update(); 
-        console.log(this);
     }
 
     updateInputs(){
@@ -372,6 +394,15 @@ class WE{
         this.hEl.value = (this.node.params.h || 10); 
         this.hEl.setAttribute("id", "we-height");
         this.hEl.type = "number";
+        if (!isNaN(this.node.params.maxh))
+            this.hEl.max = this.node.params.maxh; 
+        if (!isNaN(this.node.params.minh))
+            this.hEl.min = this.node.params.minh; 
+        if (!isNaN(this.node.params.maxw))
+            this.wEl.max = this.node.params.maxw; 
+        if (!isNaN(this.node.params.minw))
+            this.wEl.min = this.node.params.minw; 
+        
         this.tip.classList.add("tooltip");
         this.tip.style.display = "none"
         this.root.appendChild(this.hEl);
@@ -543,7 +574,7 @@ class WE{
         
         setTimeout(() => {
             this.initInputs(); 
-            this.update();  
+            this.update();
         }, 200);
     }
 }
