@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="./we3.min.js"></script>
+    <script src="./we3.js"></script>
     <link rel="stylesheet" href="./style3.css">
 </head>
 <body>
@@ -15,7 +15,12 @@
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        let we = new WE("we-cont", win2); 
+        // --- fetching json --- //
+        let params = (new URL(document.location)).searchParams;
+        let jsonUrl = "./data/" + params.get("id") + ".json"; 
+        
+        // --- init --- //
+        let we = new WE("we-cont", win15); 
         we.init();
         addEventListener("resize", (e) => {
             we.update(); 

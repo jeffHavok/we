@@ -1,25 +1,217 @@
 let win1 = {
     params: {
-        h: 90,
-        w: 200,
-        col: [50, 40, 60],
-        row: [],
+        h: 80,
+        w: 60,
+        minh: 40,
+        maxh: 157,
+        minw: 35,
+        maxw: 75,
+        areas: [{w:'col-x',h:'row-x'}],
     }, 
-    pd: [4,4,4,4],
-    gap: 4,
-    dir: "v",
+    pd: [2],
     child: [
         {
-            gap: 4,
-            pd: [4,4,4,4],
-            dir: "h",
-            child: [{size: "col-1"},{size: "col-2"},{}]
+            pd: [3], 
+            child: [{triangle: "right", glass: true,}]
         },
-        {},
-        {size: "col-1"},
     ]
 }
-
+let win3 = {
+    params: {
+        h: 70,
+        minh: 40,
+        maxh: 157,
+        w: 70,
+        minw: 70,
+        maxw: 150,
+        col: [35], 
+        areas: [{w:'col-0',h:'row-x'},{w:'col-x',h:'row-x'}],
+    }, 
+    gap: 4,
+    pd: [2],
+    child: [
+        {
+            size: "col-0",
+            pd: [3],
+            child: [{triangle: "right", glass: true,}]
+        },
+        {
+            pd: [3], 
+            child: [{triangle: "left", glass: true,}]
+        },
+    ]
+}
+let win6 = {
+    params: {
+        h: 40,
+        minh: 40,
+        maxh: 157,
+        w: 120,
+        minw: 120,
+        maxw: 225,
+        col: [40,40], 
+        areas: [{w:'col-0',h:'row-x'},{w:'col-x',h:'row-x'}],
+    }, 
+    gap: 4,
+    pd: [2],
+    child: [
+        {
+            size: "col-0",
+            pd: [3],
+            child: [{triangle: "right", glass: true,}]
+        },
+        {
+            size: "col-1",
+            pd: [3],
+            child: [{glass: true,}]
+        },
+        {
+            pd: [3], 
+            child: [{triangle: "left", glass: true,}]
+        },
+    ]
+}
+let win9 = {
+    params: {
+        h: 120,
+        minh: 40,
+        maxh: 157,
+        w: 180,
+        minw: 140,
+        maxw: 300,
+        col: [45,45,45], 
+        areas: [{w:'col-0',h:'row-x'},{w:'col-x',h:'row-x'}],
+    }, 
+    gap: 4,
+    pd: [2],
+    child: [
+        {
+            size: "col-0",
+            pd: [3],
+            child: [{triangle: "right", glass: true,}]
+        },
+        {
+            size: "col-1",
+            pd: [3],
+            child: [{glass: true,}]
+        },
+        {
+            size: "col-2",
+            pd: [3],
+            child: [{glass: true,}]
+        },
+        {
+            pd: [3], 
+            child: [{triangle: "left", glass: true,}]
+        },
+    ]
+}
+let win12 = {
+    params: {
+        h: 150,
+        minh: 60,
+        maxh: 200,
+        w: 60,
+        minw: 30,
+        maxw: 75,
+        row: [100],
+        rowOrder: [-1, 0],
+        areas: [{w:'col-x',h:'row-0'}],
+    }, 
+    dir: "v",
+    gap: 4, 
+    pd: [2],
+    child: [
+        {
+            pd: [3], 
+            child: [{glass: true,}]
+        },
+        {
+            size: "row-0",
+            pd: [3], 
+            child: [{triangle: "right", glass: true,}]
+        },
+    ]
+}
+let win14 = {
+    params: {
+        h: 150,
+        minh: 60,
+        maxh: 200,
+        w: 120,
+        minw: 70,
+        maxw: 150,
+        row: [100],
+        rowOrder: [-1, 0],
+        areas: [{w:'col-x',h:'row-0'}],
+    }, 
+    dir: "v",
+    gap: 2, 
+    pd: [2],
+    child: [
+        {
+            pd: [3], 
+            child: [{glass: true,}]
+        },
+        {
+            borderless: true,
+            size: "row-0",
+            gap: 2,
+            child: [{
+                pd: [3], 
+                child: [{triangle: "right", glass: true,}]
+            },
+            {
+                pd: [3], 
+                child: [{triangle: "left", glass: true,}]
+            },
+            ]
+        },
+    ]
+}
+let win15 = {
+    params: {
+        h: 150,
+        minh: 60,
+        maxh: 200,
+        w: 178,
+        minw: 105,
+        maxw: 225,
+        col: [59,60],
+        row: [100],
+        rowOrder: [-1, 0],
+        areas: [{w:'col-0',h:'row-0'},{w:'col-x',h:'row-0'}],
+    }, 
+    dir: "v",
+    gap: 2, 
+    pd: [2],
+    child: [
+        {
+            pd: [3], 
+            child: [{glass: true,}]
+        },
+        {
+            borderless: true,
+            size: "row-0",
+            gap: 2,
+            child: [{
+                size: "col-0",
+                pd: [3], 
+                child: [{triangle: "right", glass: true,}]
+            },
+            {
+                size: "col-1",
+                pd: [3], 
+                child: [{glass: true,}]
+            },
+            {
+                pd: [3], 
+                child: [{triangle: "left", glass: true,}]
+            },
+            ]
+        },
+    ]
+}
 let win2 = {
     params: {
         h: 150,
@@ -34,12 +226,12 @@ let win2 = {
         rowOrder: [-1,0],
         areas: [{w:"col-x",h:"row-0"},{w:"col-0",h:"row-0"}],
     },
-    pd: [2,2,2,2],
+    pd: [2],
     gap: 2,
     dir: "v",
     child: [
         {
-            pd: [3,3,3,3],
+            pd: [3],
             child: [{glass: true}],
         },
         {
@@ -48,17 +240,17 @@ let win2 = {
             borderless: true,
             child: [
                 {
-                    pd: [3,3,3,3],
+                    pd: [3],
                     child: [{glass: true, triangle: "right"}],
                 },
                 {
                     size: "col-1",
-                    pd: [3,3,3,3],
+                    pd: [3],
                     child: [{glass: true}],
                 },
                 {
                     size: "col-0",
-                    pd: [3,3,3,3],
+                    pd: [3],
                     child: [{glass: true, triangle: "left"}],
                 }
             ]
@@ -67,7 +259,7 @@ let win2 = {
 }
 
 class WE{
-    constructor(rootId, node, dpi = 2, helpersSize = 18){
+    constructor(rootId, node, dpi = 2, helpersSize = 10){
         this.helpersSize = helpersSize; 
         this.helpers = [];
         this.node = node;
@@ -78,7 +270,7 @@ class WE{
         this.wEl = document.createElement("input");
         this.tip = document.createElement("span");
         this.colEl = [];
-        this.rowEl = []; 
+        this.rowEl = [];
         this.ctx = null;
     }
 
@@ -116,8 +308,12 @@ class WE{
         }; 
         let fixedCol = this.node.params.w - this.node.params.col.reduce((acc, v) => acc + v, 0);
         let fixedRow = this.node.params.h - this.node.params.row.reduce((acc, v) => acc + v, 0);
-        let autoCol = fixedCol / (this.node.params.colOrder.length - this.node.params.col.length)
-        let autoRow = fixedRow / (this.node.params.rowOrder.length - this.node.params.row.length)
+        let autoCol = fixedCol;
+        let autoRow = fixedRow;
+        if (this.node.params.col.length && this.node.params.colOrder)
+            autoCol = autoCol / (this.node.params.colOrder.length - this.node.params.col.length)
+        if (this.node.params.rowOrder && this.node.params.row.length)
+            autoRow = autoRow / (this.node.params.rowOrder.length - this.node.params.row.length)
         if (this.node.params.areas){
             this.node.params.areas.forEach((coords, i) => {
                 let dir = coords.w.split("-")[0];
@@ -147,7 +343,9 @@ class WE{
         if (!node.gap && node.child)
             node.gap = 0; 
         if (!node.pd)
-            node.pd = [0,0,0,0];
+            node.pd = [0,0,0,0]
+        else if (node.pd.length == 1)
+            node.pd = new Array(4).fill(node.pd[0]); 
         if (!node){
             console.error("NO NODE OBJECT! Failed to CalcNode");
             return; 
@@ -395,11 +593,15 @@ class WE{
     updateInputs(){
         let inputOffsetX = (this.node.params.w * this.node.factor) / (this.dpi * 2); 
         let inputOffsetY = (this.node.params.h * this.node.factor) / (this.dpi * 2); 
+        
+        let multiplier = 1; 
+        if (!this.helpers.length)
+            multiplier = 0.5;
 
-        this.wEl.style.top = `calc(50% - ${inputOffsetY + this.helpersSize}px)`;         
+        this.wEl.style.top = `calc(50% - ${inputOffsetY + this.helpersSize * multiplier}px)`;         
         this.wEl.style.left = `calc(50% - ${inputOffsetX - this.node.params.w * (this.node.factor / this.dpi) / 2}px)`; 
         this.hEl.style.top = `50%`; 
-        this.hEl.style.left = `calc(50% - ${inputOffsetX - (this.node.params.w / this.dpi) * this.node.factor - this.helpersSize}px`; 
+        this.hEl.style.left = `calc(50% - ${inputOffsetX - (this.node.params.w / this.dpi) * this.node.factor - this.helpersSize  * multiplier}px`; 
 
         this.helpers.forEach((helper, i) => {
             if (helper.type == "input"){
@@ -443,26 +645,29 @@ class WE{
 
         this.colEl = [];
         this.rowEl = [];
-        this.node.params.row.forEach((row, i) => {
-            this.rowEl.push(document.createElement("input"));
-            this.rowEl[i].value = row;
-            this.rowEl[i].type = "number"; 
-            this.rowEl[i].setAttribute("id", "we-row-" + i);
-            this.rowEl[i].addEventListener("blur", () => {this.setRelief(this.rowEl[i])});
-            this.rowEl[i].addEventListener("change", (el) => {this.setParam("row-" + i, el.target.value)});
 
-            this.root.appendChild(this.rowEl[i]);
-        })
-        this.node.params.col.forEach((col, i) => {
-            this.colEl.push(document.createElement("input"));
-            this.colEl[i].value = col;
-            this.colEl[i].type = "number"; 
-            this.colEl[i].setAttribute("id", "we-col-" + i);
-            this.colEl[i].addEventListener("blur", () => {this.setRelief(this.colEl[i])});
-            this.colEl[i].addEventListener("change", (el) => {this.setParam("col-" + i, el.target.value)});
+        if (this.node.params.row)
+            this.node.params.row.forEach((row, i) => {
+                this.rowEl.push(document.createElement("input"));
+                this.rowEl[i].value = row;
+                this.rowEl[i].type = "number"; 
+                this.rowEl[i].setAttribute("id", "we-row-" + i);
+                this.rowEl[i].addEventListener("blur", () => {this.setRelief(this.rowEl[i])});
+                this.rowEl[i].addEventListener("change", (el) => {this.setParam("row-" + i, el.target.value)});
 
-            this.root.appendChild(this.colEl[i]);
-        })
+                this.root.appendChild(this.rowEl[i]);
+            })
+        if (this.node.params.col)
+            this.node.params.col.forEach((col, i) => {
+                this.colEl.push(document.createElement("input"));
+                this.colEl[i].value = col;
+                this.colEl[i].type = "number"; 
+                this.colEl[i].setAttribute("id", "we-col-" + i);
+                this.colEl[i].addEventListener("blur", () => {this.setRelief(this.colEl[i])});
+                this.colEl[i].addEventListener("change", (el) => {this.setParam("col-" + i, el.target.value)});
+
+                this.root.appendChild(this.colEl[i]);
+            })
 
         this.hEl.addEventListener("blur", () => {this.setRelief(this.hEl)});
         this.wEl.addEventListener("blur", () => {this.setRelief(this.wEl)});
@@ -485,45 +690,50 @@ class WE{
                 this.node.params.rowOrder.push(-1);
             }
         }
-        this.node.params.colOrder.forEach((order, i) => {
-            let helper = {dir: "col"}; 
-            if (order < 0){
-                helper.type = "text";
-                let fixedSize = this.node.params.col.reduce((acc, v) => acc+= v, 0);
-                helper.value =  (this.node.params.w - fixedSize) / 
-                                (this.node.params.colOrder.length - this.node.params.col.length);
-            } else {
-                helper.index = this.node.params.colOrder[i]; 
-                helper.type = "input";
-                helper.value = this.node.params.col[order]; 
-                
-            }
-            helper.pos = 0; 
-            for (let k = 0; k < i; k++) {
-                helper.pos += this.helpers[k].value; 
-                helper.inputPos = helper.pos + helper.value / 2;
-            }
-            this.helpers.push(helper); 
-        })
-        this.node.params.rowOrder.forEach((order, i) => {
-            let helper = {dir: "row"}; 
-            if (order < 0){
-                helper.type = "text";
-                let fixedSize = this.node.params.row.reduce((acc, v) => acc+= v, 0);
-                helper.value =  (this.node.params.h - fixedSize) / 
-                                (this.node.params.rowOrder.length - this.node.params.row.length);
-            } else {
-                helper.index = this.node.params.rowOrder[i]; 
-                helper.type = "input";
-                helper.value = this.node.params.row[order]; 
-            }
-            helper.pos = 0; 
-            for (let k = 0; k < i; k++) {
-                helper.pos += this.helpers[k + this.node.params.colOrder.length].value; 
-                helper.inputPos = helper.pos + helper.value / 2; 
-            }
-            this.helpers.push(helper); 
-        })
+        if (this.node.params.colOrder)
+            this.node.params.colOrder.forEach((order, i) => {
+                let helper = {dir: "col"}; 
+                if (order < 0){
+                    helper.type = "text";
+                    let fixedSize = this.node.params.col.reduce((acc, v) => acc+= v, 0);
+                    helper.value =  (this.node.params.w - fixedSize) / 
+                                    (this.node.params.colOrder.length - this.node.params.col.length);
+                } else {
+                    helper.index = this.node.params.colOrder[i]; 
+                    helper.type = "input";
+                    helper.value = this.node.params.col[order]; 
+                    
+                }
+                helper.pos = 0; 
+                for (let k = 0; k < i; k++) {
+                    helper.pos += this.helpers[k].value; 
+                    helper.inputPos = helper.pos + helper.value / 2;
+                }
+                this.helpers.push(helper); 
+            })
+        if (this.node.params.rowOrder)
+            this.node.params.rowOrder.forEach((order, i) => {
+                let helper = {dir: "row"}; 
+                if (order < 0){
+                    helper.type = "text";
+                    let fixedSize = this.node.params.row.reduce((acc, v) => acc+= v, 0);
+                    helper.value =  (this.node.params.h - fixedSize) / 
+                                    (this.node.params.rowOrder.length - this.node.params.row.length);
+                } else {
+                    helper.index = this.node.params.rowOrder[i]; 
+                    helper.type = "input";
+                    helper.value = this.node.params.row[order]; 
+                }
+                helper.pos = 0; 
+                for (let k = 0; k < i; k++) {
+                    if (this.node.params.colOrder)
+                        helper.pos += this.helpers[k + this.node.params.colOrder.length].value
+                    else 
+                        helper.pos += this.helpers[k].value
+                    helper.inputPos = helper.pos + helper.value / 2; 
+                }
+                this.helpers.push(helper); 
+            })
     }
 
     drawNode(node, firstEntry = true){
@@ -619,6 +829,10 @@ class WE{
             this.node.params.maxw = 1000;
         if (!this.node.params.minw)
             this.node.params.minw = 10;
+        if (!this.node.params.col)
+            this.node.params.col = [];
+        if (!this.node.params.row)
+            this.node.params.row = [];
         if (!this.node.params.minCol)
             this.node.params.minCol = [];
         if (!this.node.params.maxCol)
