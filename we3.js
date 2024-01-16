@@ -236,8 +236,6 @@ class WE{
                 ? node.autoSize = (node.geom.x2 - node.geom.x1 - fixedSize) / (affectedChild)
                 : node.autoSize = (node.geom.y2 - node.geom.y1 - fixedSize) / (affectedChild);
             
-            //console.log("fixed size:" + fixedSize + "  i:" + i + "  auto-size: " + node.autoSize + "  childs:" + (node.child.length - 1)); 
-                
             if (node.child)
                 node.child.forEach((e, j) => this.calcNode(e, node, j));
         }

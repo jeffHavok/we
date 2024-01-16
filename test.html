@@ -20,16 +20,14 @@
         addEventListener("resize", (e) => {
             we.update(); 
         });
-        
         //--- get area ---//
-        console.log(we.getArea()); 
         document.getElementById("test-area-btn").addEventListener('click', () =>{
             let el = document.getElementById("test-area");
             let str = "";
             let area = we.getArea(); 
             el.innerHTML = "";
             area.w.forEach((value, i) => {
-                el.innerHTML += "<b>" + value + "</b> x <b>" + area.h[i] + "</b>";
+                el.innerHTML += "(<b>" + value + "</b> x <b>" + area.h[i] + "</b>)";
                 i < (area.w.length - 1)
                     ? el.innerHTML += " + "
                     : el.innerHTML += " = "
