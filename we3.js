@@ -258,7 +258,7 @@ class WE{
     }
 
     validate(el, value, min, max){
-        min = (min || 10);
+        min = (min || 20);
         max = (max || 1000);
         let res = 0; 
         if (value < max && value > min){
