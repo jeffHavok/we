@@ -215,8 +215,8 @@ class WE{
                 this.ctx.moveTo((helper.pos) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.85);
                 this.ctx.lineTo((helper.pos + helper.value) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.85);
                 if (helper.type == "text"){
-                    let textX = (helper.pos + helper.value / 2) * this.node.factor; 
-                    let textY = this.node.geom.y1 - this.helpersSize / 2 + (this.node.factor * 4);  
+                    let textX = (helper.pos + helper.value / 2)  * this.node.factor; 
+                    let textY = this.node.geom.y1 - this.helpersSize / 2 + 20;  
                     this.ctx.fillText(helper.value, textX, textY); 
                 }
             }
