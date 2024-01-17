@@ -1,265 +1,5 @@
-let win1 = {
-    params: {
-        h: 80,
-        w: 60,
-        minh: 40,
-        maxh: 157,
-        minw: 35,
-        maxw: 75,
-        areas: [{w:'col-x',h:'row-x'}],
-    }, 
-    pd: [2],
-    child: [
-        {
-            pd: [3], 
-            child: [{triangle: "right", glass: true,}]
-        },
-    ]
-}
-let win3 = {
-    params: {
-        h: 70,
-        minh: 40,
-        maxh: 157,
-        w: 70,
-        minw: 70,
-        maxw: 150,
-        col: [35], 
-        areas: [{w:'col-0',h:'row-x'},{w:'col-x',h:'row-x'}],
-    }, 
-    gap: 4,
-    pd: [2],
-    child: [
-        {
-            size: "col-0",
-            pd: [3],
-            child: [{triangle: "right", glass: true,}]
-        },
-        {
-            pd: [3], 
-            child: [{triangle: "left", glass: true,}]
-        },
-    ]
-}
-let win6 = {
-    params: {
-        h: 40,
-        minh: 40,
-        maxh: 157,
-        w: 120,
-        minw: 120,
-        maxw: 225,
-        col: [40,40], 
-        areas: [{w:'col-0',h:'row-x'},{w:'col-x',h:'row-x'}],
-    }, 
-    gap: 4,
-    pd: [2],
-    child: [
-        {
-            size: "col-0",
-            pd: [3],
-            child: [{triangle: "right", glass: true,}]
-        },
-        {
-            size: "col-1",
-            pd: [3],
-            child: [{glass: true,}]
-        },
-        {
-            pd: [3], 
-            child: [{triangle: "left", glass: true,}]
-        },
-    ]
-}
-let win9 = {
-    params: {
-        h: 120,
-        minh: 40,
-        maxh: 157,
-        w: 180,
-        minw: 140,
-        maxw: 300,
-        col: [45,45,45], 
-        areas: [{w:'col-0',h:'row-x'},{w:'col-x',h:'row-x'}],
-    }, 
-    gap: 4,
-    pd: [2],
-    child: [
-        {
-            size: "col-0",
-            pd: [3],
-            child: [{triangle: "right", glass: true,}]
-        },
-        {
-            size: "col-1",
-            pd: [3],
-            child: [{glass: true,}]
-        },
-        {
-            size: "col-2",
-            pd: [3],
-            child: [{glass: true,}]
-        },
-        {
-            pd: [3], 
-            child: [{triangle: "left", glass: true,}]
-        },
-    ]
-}
-let win12 = {
-    params: {
-        h: 150,
-        minh: 60,
-        maxh: 200,
-        w: 60,
-        minw: 30,
-        maxw: 75,
-        row: [100],
-        rowOrder: [-1, 0],
-        areas: [{w:'col-x',h:'row-0'}],
-    }, 
-    dir: "v",
-    gap: 4, 
-    pd: [2],
-    child: [
-        {
-            pd: [3], 
-            child: [{glass: true,}]
-        },
-        {
-            size: "row-0",
-            pd: [3], 
-            child: [{triangle: "right", glass: true,}]
-        },
-    ]
-}
-let win14 = {
-    params: {
-        h: 150,
-        minh: 60,
-        maxh: 200,
-        w: 120,
-        minw: 70,
-        maxw: 150,
-        row: [100],
-        rowOrder: [-1, 0],
-        areas: [{w:'col-x',h:'row-0'}],
-    }, 
-    dir: "v",
-    gap: 2, 
-    pd: [2],
-    child: [
-        {
-            pd: [3], 
-            child: [{glass: true,}]
-        },
-        {
-            borderless: true,
-            size: "row-0",
-            gap: 2,
-            child: [{
-                pd: [3], 
-                child: [{triangle: "right", glass: true,}]
-            },
-            {
-                pd: [3], 
-                child: [{triangle: "left", glass: true,}]
-            },
-            ]
-        },
-    ]
-}
-let win15 = {
-    params: {
-        h: 150,
-        minh: 60,
-        maxh: 200,
-        w: 178,
-        minw: 105,
-        maxw: 225,
-        col: [59,60],
-        row: [100],
-        rowOrder: [-1, 0],
-        areas: [{w:'col-0',h:'row-0'},{w:'col-x',h:'row-0'}],
-    }, 
-    dir: "v",
-    gap: 2, 
-    pd: [2],
-    child: [
-        {
-            pd: [3], 
-            child: [{glass: true,}]
-        },
-        {
-            borderless: true,
-            size: "row-0",
-            gap: 2,
-            child: [{
-                size: "col-0",
-                pd: [3], 
-                child: [{triangle: "right", glass: true,}]
-            },
-            {
-                size: "col-1",
-                pd: [3], 
-                child: [{glass: true,}]
-            },
-            {
-                pd: [3], 
-                child: [{triangle: "left", glass: true,}]
-            },
-            ]
-        },
-    ]
-}
-let win2 = {
-    params: {
-        h: 150,
-        w: 178,
-        minh: 120,
-        maxh: 220,
-        minw: 150,
-        maxw: 240,
-        col: [40, 60],
-        row: [100],
-        colOrder: [-1,1,0],
-        rowOrder: [-1,0],
-        areas: [{w:"col-x",h:"row-0"},{w:"col-0",h:"row-0"}],
-    },
-    pd: [2],
-    gap: 2,
-    dir: "v",
-    child: [
-        {
-            pd: [3],
-            child: [{glass: true}],
-        },
-        {
-            size: "row-0",
-            gap: 2, 
-            borderless: true,
-            child: [
-                {
-                    pd: [3],
-                    child: [{glass: true, triangle: "right"}],
-                },
-                {
-                    size: "col-1",
-                    pd: [3],
-                    child: [{glass: true}],
-                },
-                {
-                    size: "col-0",
-                    pd: [3],
-                    child: [{glass: true, triangle: "left"}],
-                }
-            ]
-        }
-    ]
-}
-
 class WE{
-    constructor(rootId, node, dpi = 2, helpersSize = 13){
+    constructor(rootId, node, dpi = 2, helpersSize = 10){
         this.helpersSize = helpersSize; 
         this.helpers = [];
         this.node = node;
@@ -791,9 +531,12 @@ class WE{
     updateCanvas(){
         this.canvas.width = this.root.clientWidth * this.dpi;
         this.canvas.height = this.root.clientHeight * this.dpi;
+        let oldFactor = (this.node.invFactor || 1);
+        console.log("helper: " + this.helpersSize + "     factor:" + this.node.invFactor)
         this.node.factor = Math.min(    Math.floor(this.canvas.width / (this.node.params.w + 80)),
                                         Math.floor(this.canvas.height / (this.node.params.h + 80))) 
-        this.node.invFactor = 10 / this.node.factor; 
+        this.node.invFactor = Math.min(this.canvas.width, this.canvas.height) / 100; 
+        this.helpersSize = (this.hEl.clientHeight * 2) + 10;
     }
 
     update(){
@@ -822,7 +565,6 @@ class WE{
         this.node.factor = Math.min(    Math.floor(this.canvas.width / (this.node.params.w + 80)),
                                         Math.floor(this.canvas.height / (this.node.params.h + 80)));
         this.node.invFactor = 10 / this.node.factor; 
-        this.helpersSize *= this.node.factor; 
         this.ctx = this.canvas.getContext("2d"); 
         if (!this.node.params.maxh)
             this.node.params.maxh = 1000;
@@ -851,5 +593,3 @@ class WE{
         }, 200);
     }
 }
-
-
