@@ -183,7 +183,7 @@ class WE{
         this.ctx.strokeStyle = "#000";
         this.ctx.fillStyle = "#000";
         this.ctx.lineWidth = this.dpi * 1.5; 
-        this.ctx.font = `bold ${this.dpi * 24}px sans-serif`;
+        this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
         this.ctx.textAlign = "center";
         this.ctx.beginPath();
 
@@ -216,8 +216,14 @@ class WE{
                 this.ctx.lineTo((helper.pos + helper.value) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.85);
                 if (helper.type == "text"){
                     let textX = (helper.pos + helper.value / 2)  * this.node.factor; 
-                    let textY = this.node.geom.y1 - this.helpersSize / 2 + 20;  
+                    let textY = this.node.geom.y1 - this.helpersSize / 2 + 20; 
+                    if (helper.urgent)
+                        this.ctx.fillStyle = "#ce2020"
+                    else 
+                        this.ctx.fillStyle = "#000";
+                        //this.ctx.fillStyle = `rgb(${(Math.sin(Date.now() / 100) * 0.5 + 1) * 255} ,0 ,0)`;
                     this.ctx.fillText(helper.value, textX, textY); 
+                    this.ctx.fillStyle = "#000";
                 }
             }
             if (helper.dir == "row"){
@@ -257,7 +263,40 @@ class WE{
         this.tip.innerHTML = msgStr;
     }
 
-    validate(el, value, min, max){
+    stash(){
+        this.backNode = JSON.parse(JSON.stringify(this.node));
+        this.backHelpers = JSON.parse(JSON.stringify(this.helpers));
+    }
+    undo(){
+        this.node = JSON.parse(JSON.stringify(this.backNode));
+        this.helpers = JSON.parse(JSON.stringify(this.backHelpers));
+    }
+
+    resetInputs(){
+        this.hEl.value = this.node.params.h; 
+        this.wEl.value = this.node.params.w;
+        this.helpers.forEach((helper, i) => {
+            if (helper.type == "input"){
+                this[(helper.dir) + "El"][helper.index].value = helper.value; 
+            }
+        })
+    }
+
+    checkBounds(){
+        this.helpers.forEach((helper, i) => {
+            if (helper.value < 20){
+                this.undo();
+                this.helpers[i].urgent = true;
+                console.log(this.helpers[i].urgent); 
+                console.log(this.helpers[i].value);  
+                this.resetInputs(); 
+            } else {
+                this.helpers[i].urgent = false;
+            }
+        })
+    }
+    
+    validate(el, value, min, max){ 
         min = (min || 20);
         max = (max || 1000);
         let res = 0; 
@@ -279,6 +318,9 @@ class WE{
     }
 
     setParam(param = "height", value = 100, limit = null){
+
+        this.stash(); 
+
         if (param == "height"){
             if (!limit){
                 this.node.params.h = this.validate( this.hEl, value, 
@@ -327,7 +369,11 @@ class WE{
                 }
             }
         }
-        this.update(); 
+
+        this.update();
+        this.checkBounds();
+        this.update();
+        console.log(this.helpers)
     }
 
     updateInputs(){
@@ -477,14 +523,8 @@ class WE{
     }
 
     drawNode(node, firstEntry = true){
-        if (firstEntry){
-            this.ctx.translate(this.node.offsetX, this.node.offsetY);
-            this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height)
-        }
-
         this.ctx.strokeStyle = "#000";
         this.ctx.lineWidth = this.dpi * 1.5; 
-        // this.ctx.fillStyle = `hsl(${(node.bb.x2 / node.bb.y2) * 180 + node.bb.x1 * 2 }deg, 55%, 80%)`;
         this.ctx.fillStyle = "#eee8e0";
         if (node.glass)
             this.ctx.fillStyle = "#c0c8ef";
@@ -532,7 +572,6 @@ class WE{
         this.canvas.width = this.root.clientWidth * this.dpi;
         this.canvas.height = this.root.clientHeight * this.dpi;
         let oldFactor = (this.node.invFactor || 1);
-        console.log("helper: " + this.helpersSize + "     factor:" + this.node.invFactor)
         this.node.factor = Math.min(    Math.floor(this.canvas.width / (this.node.params.w + 80)),
                                         Math.floor(this.canvas.height / (this.node.params.h + 80))) 
         this.node.invFactor = Math.min(this.canvas.width, this.canvas.height) / 100; 
@@ -545,9 +584,21 @@ class WE{
         this.scaleGeometry(this.node);
         this.calcOffset(this.node); 
         this.calcHelpers();
-        this.drawNode(this.node); 
-        this.drawHelpers();
+        
+        this.render(); 
+        
         this.updateInputs();
+    }
+
+    render(){
+        if (this.node){
+            this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height)
+            this.ctx.translate(this.node.offsetX, this.node.offsetY);
+            this.ctx.restore();
+            this.drawNode(this.node); 
+            this.drawHelpers(); 
+            this.ctx.save(); 
+        }
     }
 
     init(){
@@ -590,6 +641,7 @@ class WE{
         setTimeout(() => {
             this.initInputs(); 
             this.update();
-        }, 200);
+            this.stash(); 
+        }, 80);
     }
 }
