@@ -217,9 +217,16 @@ class WE{
                 if (helper.type == "text"){
                     let textX = (helper.pos + helper.value / 2)  * this.node.factor; 
                     let textY = this.node.geom.y1 - this.helpersSize / 2 + 20; 
-                    if (helper.value < 21)
+                    if (helper.value < 21){
                         this.ctx.fillStyle = "#ce2020"
-                    this.ctx.fillText(helper.value, textX, textY); 
+                        this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
+                        this.ctx.fillText(helper.value, textX, textY - 10); 
+                        this.ctx.font = `bold ${this.dpi * 12}px sans-serif`;
+                        this.ctx.fillText("Min.20", textX, textY + 10); 
+                    } else {
+                        this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
+                        this.ctx.fillText(helper.value, textX, textY); 
+                    }
                     this.ctx.fillStyle = "#000";
                 }
             }
@@ -233,10 +240,16 @@ class WE{
                 if (helper.type == "text"){
                     let textX = this.node.geom.x2 + this.helpersSize / 2.4;
                     let textY = (helper.pos + helper.value / 2) * this.node.factor + (this.node.factor * 4); 
-                    if (helper.value < 21)
+                    if (helper.value < 21){
                         this.ctx.fillStyle = "#ce2020"
-                    this.ctx.fillText(helper.value, textX, textY); 
-                    this.ctx.fillStyle = "#000";
+                        this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
+                        this.ctx.fillText(helper.value, textX, textY  - 10); 
+                        this.ctx.font = `bold ${this.dpi * 12}px sans-serif`;
+                        this.ctx.fillText("Min.20", textX, textY + 10); 
+                    } else {
+                        this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
+                        this.ctx.fillText(helper.value, textX, textY); 
+                    }
                 }
             }
         })
