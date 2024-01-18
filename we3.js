@@ -217,11 +217,8 @@ class WE{
                 if (helper.type == "text"){
                     let textX = (helper.pos + helper.value / 2)  * this.node.factor; 
                     let textY = this.node.geom.y1 - this.helpersSize / 2 + 20; 
-                    if (helper.urgent)
+                    if (helper.value < 21)
                         this.ctx.fillStyle = "#ce2020"
-                    else 
-                        this.ctx.fillStyle = "#000";
-                        //this.ctx.fillStyle = `rgb(${(Math.sin(Date.now() / 100) * 0.5 + 1) * 255} ,0 ,0)`;
                     this.ctx.fillText(helper.value, textX, textY); 
                     this.ctx.fillStyle = "#000";
                 }
@@ -236,7 +233,10 @@ class WE{
                 if (helper.type == "text"){
                     let textX = this.node.geom.x2 + this.helpersSize / 2.4;
                     let textY = (helper.pos + helper.value / 2) * this.node.factor + (this.node.factor * 4); 
+                    if (helper.value < 21)
+                        this.ctx.fillStyle = "#ce2020"
                     this.ctx.fillText(helper.value, textX, textY); 
+                    this.ctx.fillStyle = "#000";
                 }
             }
         })
@@ -286,10 +286,8 @@ class WE{
         this.helpers.forEach((helper, i) => {
             if (helper.value < 20){
                 this.undo();
-                this.helpers[i].urgent = true;
-                console.log(this.helpers[i].urgent); 
-                console.log(this.helpers[i].value);  
                 this.resetInputs(); 
+                this.helpers[i].urgent = true;
             } else {
                 this.helpers[i].urgent = false;
             }
