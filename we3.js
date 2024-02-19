@@ -14,6 +14,7 @@ class WE{
         this.rowEl = [];
         this.ctx = null;
         this.snapMode = false;
+        this.forceCenter = false; 
     }
 
     calcAvailableSpace(dir, index){
@@ -43,8 +44,13 @@ class WE{
     calcOffset(){
         this.node.oldOffsetX = this.node.offsetX; 
         this.node.oldOffsetY = this.node.offsetY; 
-        this.node.offsetX = (this.canvas.width - (this.node.geom.x2 - this.node.geom.x1)) / 2;
-        this.node.offsetY = (this.canvas.height - (this.node.geom.y2 - this.node.geom.y1)) / 2;
+        if (this.forceCenter){
+            this.node.offsetX = (this.canvas.width - (this.node.geom.x2 - this.node.geom.x1) - this.helpersSize) / 2;
+            this.node.offsetY = (this.canvas.height - (this.node.geom.y2 - this.node.geom.y1) + this.helpersSize) / 2;
+        } else {
+            this.node.offsetX = (this.canvas.width - (this.node.geom.x2 - this.node.geom.x1)) / 2;
+            this.node.offsetY = (this.canvas.height - (this.node.geom.y2 - this.node.geom.y1)) / 2;
+        }
     }
 
     scaleGeometry(node){
@@ -230,7 +236,7 @@ class WE{
             this.ctx.fillText(parseFloat(this.node.params.w.toFixed(2)), textX, textY); 
             this.ctx.fillStyle = "#000";
 
-            textX = this.node.geom.x2 + (this.helpersSize * (multiplier * 0.65));
+            textX = this.node.geom.x2 + (this.helpersSize * (multiplier * 0.65) + 60);
             textY = (this.node.geom.y2 - this.node.geom.y1) / 2; 
             this.ctx.font = `bold ${this.dpi * 22}px sans-serif`; 
             this.ctx.fillText(parseFloat(this.node.params.h.toFixed(2)), textX, textY); 
@@ -330,7 +336,7 @@ class WE{
         this.snapMode = true;
         this.update();
         let blobPromise = new Promise((resolve) => {
-            this.canvas.toBlob((blob) => { resolve(blob) });
+            this.canvas.toBlob((blob) => { resolve(blob) }, "image/png");
         });
         this.snapMode = false;
         this.update();
@@ -339,9 +345,11 @@ class WE{
 
     getSnapshotBase64(){
         this.snapMode = true;
+        this.forceCenter = true;
         this.update();
         let b64 = this.canvas.toDataURL("image/png"); 
         this.snapMode = false;
+        this.forceCenter = false;
         this.update();
         return b64;
     }
