@@ -13,7 +13,7 @@ class WE{
         this.colEl = [];
         this.rowEl = [];
         this.ctx = null;
-        this.snapMode = true;
+        this.snapMode = false;
     }
 
     calcAvailableSpace(dir, index){
