@@ -17,13 +17,13 @@
     document.addEventListener("DOMContentLoaded", () => {
         // --- fetching json --- //
         let params = (new URL(document.location)).searchParams;
-        let jsonUrl = "./data/" + params.get("id") + ".json"; 
+        let jsonUrl = "./data/" + (params.get("id") || 1) + ".json"; 
         let we = null;
         fetch(jsonUrl)
         .then(res => res.json())
         .then(data => {
             we = new WE("we-cont", data); 
-            we.init(); 
+            we.init();
         })
         addEventListener("resize", (e) => { we.update(); });
         //--- get area ---//
@@ -39,7 +39,12 @@
                     : el.innerHTML += " = "
             })
             el.innerHTML += "<b>" + area.area + "</b> cm&#178;"; 
+
         })
+        setTimeout(() => {
+            //--- image data ---//
+            console.log(we.getSnapshotBase64()); 
+        }, 1500);
     });
 </script>
 </html>

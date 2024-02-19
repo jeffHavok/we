@@ -2,6 +2,7 @@ class WE{
     constructor(rootId, node, dpi = 2, helpersSize = 10){
         this.helpersSize = helpersSize; 
         this.helpers = [];
+        this.minsize = 20; 
         this.node = node;
         this.dpi = dpi; 
         this.root = document.getElementById(rootId);
@@ -12,6 +13,22 @@ class WE{
         this.colEl = [];
         this.rowEl = [];
         this.ctx = null;
+        this.snapMode = true;
+    }
+
+    calcAvailableSpace(dir, index){
+        let spaceLeft = 0;
+        let fixedSize = this.helpers.reduce((acc, helper, i) => {
+            if (i != index && helper.dir == dir){
+                helper.type == "text"
+                    ? acc += this.minsize
+                    : acc += helper.value;
+            }
+        }, 0)
+        dir == "col"
+            ? spaceLeft = this.node.params.w - fixedSize
+            : spaceLeft = this.node.params.h - fixedSize;
+        return(spaceLeft);
     }
 
     parseParam(v){
@@ -206,6 +223,20 @@ class WE{
         this.ctx.moveTo(this.node.geom.x2 + this.helpersSize * multiplier * 0.95, this.node.geom.y1);
         this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * multiplier * 0.95, this.node.geom.y2);
 
+        if (this.snapMode){
+            let textX = (this.node.geom.x2 - this.node.geom.x1) / 2; 
+            let textY = this.node.geom.y1 - (this.helpersSize * multiplier);
+            this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
+            this.ctx.fillText(parseFloat(this.node.params.w.toFixed(2)), textX, textY); 
+            this.ctx.fillStyle = "#000";
+
+            textX = this.node.geom.x2 + (this.helpersSize * (multiplier * 0.65));
+            textY = (this.node.geom.y2 - this.node.geom.y1) / 2; 
+            this.ctx.font = `bold ${this.dpi * 22}px sans-serif`; 
+            this.ctx.fillText(parseFloat(this.node.params.h.toFixed(2)), textX, textY); 
+            this.ctx.fillStyle = "#000";
+        }
+
         this.helpers.forEach((helper, i) => {
             if (helper.dir == "col"){
                 this.ctx.moveTo(helper.pos * this.node.factor, this.node.geom.y1);
@@ -214,18 +245,18 @@ class WE{
                 this.ctx.lineTo((helper.pos + helper.value) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.95);
                 this.ctx.moveTo((helper.pos) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.85);
                 this.ctx.lineTo((helper.pos + helper.value) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.85);
-                if (helper.type == "text"){
+                if (helper.type == "text" || this.snapMode){
                     let textX = (helper.pos + helper.value / 2)  * this.node.factor; 
                     let textY = this.node.geom.y1 - this.helpersSize / 2 + 20; 
-                    if (helper.value < 21){
+                    if (helper.value < (this.minsize + 1) && !this.snapMode){
                         this.ctx.fillStyle = "#ce2020"
                         this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
-                        this.ctx.fillText(helper.value, textX, textY - 10); 
+                        this.ctx.fillText(parseFloat(helper.value.toFixed(2)), textX, textY - 10); 
                         this.ctx.font = `bold ${this.dpi * 12}px sans-serif`;
-                        this.ctx.fillText("Min.20", textX, textY + 10); 
+                        this.ctx.fillText("Min." + this.minsize, textX, textY + 10); 
                     } else {
                         this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
-                        this.ctx.fillText(helper.value, textX, textY); 
+                        this.ctx.fillText(parseFloat(helper.value.toFixed(2)), textX, textY); 
                     }
                     this.ctx.fillStyle = "#000";
                 }
@@ -237,18 +268,18 @@ class WE{
                 this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * 0.95, (helper.pos + helper.value) * this.node.factor);
                 this.ctx.moveTo(this.node.geom.x2 + this.helpersSize * 0.85, (helper.pos) * this.node.factor);
                 this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * 0.85, (helper.pos + helper.value) * this.node.factor);
-                if (helper.type == "text"){
+                if (helper.type == "text" || this.snapMode){
                     let textX = this.node.geom.x2 + this.helpersSize / 2.4;
                     let textY = (helper.pos + helper.value / 2) * this.node.factor + (this.node.factor * 4); 
-                    if (helper.value < 21){
+                    if (helper.value < (this.minsize + 1) && !this.snapMode){
                         this.ctx.fillStyle = "#ce2020"
                         this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
-                        this.ctx.fillText(helper.value, textX, textY  - 10); 
+                        this.ctx.fillText(parseFloat(helper.value.toFixed(2)), textX, textY  - 10); 
                         this.ctx.font = `bold ${this.dpi * 12}px sans-serif`;
-                        this.ctx.fillText("Min.20", textX, textY + 10); 
+                        this.ctx.fillText("Min." + this.minsize, textX, textY + 10); 
                     } else {
                         this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
-                        this.ctx.fillText(helper.value, textX, textY); 
+                        this.ctx.fillText(parseFloat(helper.value.toFixed(2)), textX, textY); 
                     }
                 }
             }
@@ -267,7 +298,7 @@ class WE{
         let msgStr = "";
         el.classList.add("urgent"); 
         this.tip.style.top = el.style.top;
-        this.tip.style.left = el.style.left;
+        this.tip.style.left = el.style.left;5
         this.tip.style.display = "block";
         type == "min"
             ? msgStr += "Min. "
@@ -294,21 +325,44 @@ class WE{
             }
         })
     }
+    
+    getSnapshot(){
+        this.snapMode = true;
+        this.update();
+        let blobPromise = new Promise((resolve) => {
+            this.canvas.toBlob((blob) => { resolve(blob) });
+        });
+        this.snapMode = false;
+        this.update();
+        return blobPromise;
+    }
+
+    getSnapshotBase64(){
+        this.snapMode = true;
+        this.update();
+        let b64 = this.canvas.toDataURL("image/png"); 
+        this.snapMode = false;
+        this.update();
+        return b64;
+    }
 
     checkBounds(){
+        let bounds = false;
         this.helpers.forEach((helper, i) => {
-            if (helper.value < 20){
+            if (helper.value < this.minsize){
                 this.undo();
+                bounds = true; 
                 this.resetInputs(); 
                 this.helpers[i].urgent = true;
             } else {
                 this.helpers[i].urgent = false;
             }
         })
+        return bounds; 
     }
     
     validate(el, value, min, max){ 
-        min = (min || 20);
+        min = (min || this.minsize);
         max = (max || 1000);
         let res = 0; 
         if (value < max && value > min){
@@ -329,6 +383,8 @@ class WE{
     }
 
     setParam(param = "height", value = 100, limit = null){
+        let dir = "";
+        let index = 0; 
 
         this.stash(); 
 
@@ -355,8 +411,8 @@ class WE{
             }
         }
         else{
-            let dir = param.split("-")[0];
-            let index = param.split("-")[1]; 
+            dir = param.split("-")[0];
+            index = param.split("-")[1]; 
             if (dir == "col"){
                 if (!limit){
                     this.node.params.col[index] = this.validate( this.colEl[index], value, 
@@ -382,9 +438,9 @@ class WE{
         }
 
         this.update();
-        this.checkBounds();
+        let bounds = this.checkBounds();
         this.update();
-        console.log(this.helpers)
+        console.log(this); 
     }
 
     updateInputs(){
@@ -403,11 +459,11 @@ class WE{
         this.helpers.forEach((helper, i) => {
             if (helper.type == "input"){
                 let j = helper.index; 
-                if (helper.dir == "col"){
+                if (helper.dir == "col" && this.colEl[j]){
                     this.colEl[j].style.left = `calc(50% - ${inputOffsetX - (this.helpers[i].pos + this.helpers[i].value / 2) * this.node.factor / 2}px)`; 
                     this.colEl[j].style.top = `calc(50% - ${inputOffsetY + this.helpersSize / 2.2}px)`; 
                 }
-                if (helper.dir == "row"){
+                if (helper.dir == "row" && this.rowEl[j]){
                     this.rowEl[j].style.top = `calc(50% - ${inputOffsetY - (this.helpers[i].pos + this.helpers[i].value / 2) * this.node.factor / 2}px)`; 
                     this.rowEl[j].style.left = `calc(50% + ${inputOffsetX + this.helpersSize / 2.4}px)`; 
                 }
@@ -631,11 +687,11 @@ class WE{
         if (!this.node.params.maxh)
             this.node.params.maxh = 1000;
         if (!this.node.params.minh)
-            this.node.params.minh = 10;
+            this.node.params.minh = this.minsize;
         if (!this.node.params.maxw)
             this.node.params.maxw = 1000;
         if (!this.node.params.minw)
-            this.node.params.minw = 10;
+            this.node.params.minw = this.minsize;
         if (!this.node.params.col)
             this.node.params.col = [];
         if (!this.node.params.row)
