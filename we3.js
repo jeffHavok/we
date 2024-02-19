@@ -298,7 +298,7 @@ class WE{
         let msgStr = "";
         el.classList.add("urgent"); 
         this.tip.style.top = el.style.top;
-        this.tip.style.left = el.style.left;5
+        this.tip.style.left = el.style.left;
         this.tip.style.display = "block";
         type == "min"
             ? msgStr += "Min. "
