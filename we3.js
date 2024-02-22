@@ -394,7 +394,7 @@ class WE{
         let ratioReset = false; 
         let newRatio = []; 
         let elCount = 0; 
-        
+
         if (dir == "col"){
             this.initRatio.forEach((ratio, j) => {
                 if (ratio * this.node.params.w < (this.minsize + 1)){ ratioReset = true; } 
@@ -409,7 +409,7 @@ class WE{
         }
         if (dir == "row"){
             this.initRatio.forEach((ratio, j) => {
-                if (ratio * this.node.params.w < (this.minsize + 1)){ ratioReset = true; } 
+                if (ratio * this.node.params.h < (this.minsize + 1)){ ratioReset = true; } 
             });
             if (ratioReset){
                 this.initRatio.forEach((ratio, j) => {
