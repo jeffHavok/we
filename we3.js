@@ -390,6 +390,63 @@ class WE{
         return(res); 
     }
 
+    applyRatioSize(dir = "col"){
+        let ratioReset = false; 
+        let newRatio = []; 
+        let elCount = 0; 
+        
+        if (dir == "col"){
+            this.initRatio.forEach((ratio, j) => {
+                if (ratio * this.node.params.w < (this.minsize + 1)){ ratioReset = true; } 
+            });
+            if (ratioReset){
+                this.initRatio.forEach((ratio, j) => {
+                    if (this.node.params.colOrder.length && j < this.node.params.colOrder.length)
+                        this.initRatio[j] = (1 / this.node.params.colOrder.length);
+                });
+                console.log(this.initRatio)
+            }
+        }
+        if (dir == "row"){
+            this.initRatio.forEach((ratio, j) => {
+                if (ratio * this.node.params.w < (this.minsize + 1)){ ratioReset = true; } 
+            });
+            if (ratioReset){
+                this.initRatio.forEach((ratio, j) => {
+                    let rowj = j - this.node.params.colOrder.length; 
+                    if (rowj > 0)
+                        this.initRatio[j] = (1 / this.node.params.rowOrder.length);
+                });
+                console.log(this.initRatio)
+            }
+        }
+
+        this.helpers.forEach((helper, i) => {
+            if (helper.dir == "col" && dir == "col"){
+                if (!isNaN(helper.index) && this.node.params.col[helper.index] != undefined){
+                    let newVal = Math.trunc(this.node.params.w * this.initRatio[i] * 10) / 10;
+                    console.log(helper.dir + "   " + helper.index)
+                    this.node.params.col[helper.index] = newVal; 
+                    helper.value = newVal; 
+                    if (this.colEl[helper.index])
+                        this.colEl[helper.index].value = helper.value; 
+                }
+            }
+            if (helper.dir == "row" && dir == "row") {
+                if (!isNaN(helper.index) && this.node.params.row[helper.index] != undefined){
+                    let newVal = Math.trunc(this.node.params.h * this.initRatio[i] * 10) / 10;
+                    console.log(helper.dir + "   " + helper.index)
+                    this.node.params.row[helper.index] = newVal; 
+                    helper.value = newVal; 
+                    if (this.rowEl[helper.index])
+                        this.rowEl[helper.index].value = helper.value; 
+                }
+            }
+        })
+
+        this.updateInputs(); 
+    }
+
     setParam(param = "height", value = 100, limit = null){
         let dir = "";
         let index = 0; 
@@ -397,6 +454,7 @@ class WE{
         this.stash(); 
 
         if (param == "height"){
+            dir = "row"
             if (!limit){
                 this.node.params.h = this.validate( this.hEl, value, 
                                                     this.node.params.minh, 
@@ -408,6 +466,7 @@ class WE{
             }
         } 
         else if (param == "width"){
+            dir = "col"
             if (!limit){
                 this.node.params.w = this.validate( this.wEl, value, 
                                                     this.node.params.minw, 
@@ -446,7 +505,15 @@ class WE{
         }
 
         this.update();
-        let bounds = this.checkBounds();
+
+        if (param == "height" || param == "width"){
+            this.applyRatioSize(dir)
+        }
+        else {
+            this.checkBounds();
+            this.calcRatio(); 
+        }
+
         this.update();
         console.log(this); 
     }
@@ -536,7 +603,19 @@ class WE{
         this.wEl.addEventListener("change", (el) => {this.setParam("width", el.target.value)});
     }
 
-    calcHelpers(){
+    calcRatio(){
+        if (this.helpers){
+            let intiialRatio = []; 
+            this.helpers.forEach((helper, i) => {
+                helper.dir == "col"
+                    ? intiialRatio.push(helper.value / this.node.params.w)
+                    : intiialRatio.push(helper.value / this.node.params.h); 
+            })
+            this.initRatio = [...intiialRatio]; 
+        }
+    }
+
+    calcHelpers(firstEntry = false){
         this.helpers = []; 
 
         if (this.node.params.col.length > 0){
@@ -717,6 +796,9 @@ class WE{
             this.initInputs(); 
             this.update();
             this.stash(); 
+            this.calcRatio(); 
         }, 80);
+
+
     }
 }

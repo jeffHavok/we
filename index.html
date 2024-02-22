@@ -42,12 +42,13 @@
 
         })
         setTimeout(() => {
+            console.log(we); 
             //--- image data ---//
-            console.log(we.getSnapshotBase64()); 
+            // console.log(we.getSnapshotBase64()); 
             we.getSnapshot().then((value) => {
-                console.log(value); 
+                // console.log(value); 
             }) 
-        }, 1500);
+        }, 500);
     });
 </script>
 </html>
