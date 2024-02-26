@@ -15,6 +15,10 @@ class WE{
         this.ctx = null;
         this.snapMode = false;
         this.forceCenter = false; 
+        this.thumbs = {
+            res: 128, 
+            factor: 1,
+        }
     }
 
     calcAvailableSpace(dir, index){
@@ -97,6 +101,10 @@ class WE{
         return(res); 
     }
 
+    updateNodeParams(params){
+        
+    }
+
     calcNode(node, parent = null, i = 0){
         node.bb = {x1: 0, y1: 0, x2: 0, y2: 0};
         node.geom = {...node.bb}; 
@@ -121,7 +129,13 @@ class WE{
                         x2: this.node.params.w,
                         y2: this.node.params.h };
             node.geom = {...node.bb}; 
+            this.node.winIndex = 0;
         } else {
+            if (node.glass){
+                node.winId = this.node.winIndex; 
+                this.node.winIndex += 1; 
+            }
+
             if (parent.dir == "h"){
                 let pw = parent.geom.x2 - parent.geom.x1;
                 node.bb.y1 = parent.geom.y1; 
@@ -518,6 +532,15 @@ class WE{
         console.log(this); 
     }
 
+    syncInputs(){
+        this.wEl.value = this.node.params.w; 
+        this.hEl.value = this.node.params.h; 
+        if (this.node.params.col)
+            this.node.params.col.forEach((e, i) => { this.colEl[i].value = e; })
+        if (this.node.params.row)
+            this.node.params.row.forEach((e, i) => { this.rowEl[i].value = e; })
+    }
+
     updateInputs(){
         let inputOffsetX = (this.node.params.w * this.node.factor) / (this.dpi * 2); 
         let inputOffsetY = (this.node.params.h * this.node.factor) / (this.dpi * 2); 
@@ -682,10 +705,10 @@ class WE{
         this.ctx.fillStyle = "#eee8e0";
         if (node.glass)
             this.ctx.fillStyle = "#c0c8ef";
-        this.ctx.fillRect(  node.geom.x1,
-                            node.geom.y1,
-                            node.geom.x2 - node.geom.x1,
-                            node.geom.y2 - node.geom.y1);
+            this.ctx.fillRect(  node.geom.x1,
+                                node.geom.y1,
+                                node.geom.x2 - node.geom.x1,
+                                node.geom.y2 - node.geom.y1);
         if (!node.borderless)
             this.ctx.strokeRect(node.geom.x1,
                                 node.geom.y1,
@@ -720,6 +743,59 @@ class WE{
             this.ctx.closePath();
             this.ctx.stroke();
         }
+    }
+
+    drawNodeThumb(node, firstEntry = true, lCtx, option = 0){
+        lCtx.strokeStyle = "#000";
+        lCtx.lineWidth = 1; 
+        lCtx.fillStyle = "#90c0f0";
+        if (firstEntry){
+            lCtx.strokeRect(node.bb.x1 * this.thumbs.factor,
+                            node.bb.y1 * this.thumbs.factor,
+                            (node.bb.x2 - node.bb.x1) * this.thumbs.factor,
+                            (node.bb.y2 - node.bb.y1) * this.thumbs.factor);
+        } 
+        if (node.glass){
+            lCtx.fillRect(node.bb.x1 * this.thumbs.factor,
+                        node.bb.y1 * this.thumbs.factor,
+                        (node.bb.x2 - node.bb.x1) * this.thumbs.factor,
+                        (node.bb.y2 - node.bb.y1) * this.thumbs.factor);
+            lCtx.strokeRect(node.bb.x1 * this.thumbs.factor,
+                            node.bb.y1 * this.thumbs.factor,
+                            (node.bb.x2 - node.bb.x1) * this.thumbs.factor,
+                            (node.bb.y2 - node.bb.y1) * this.thumbs.factor);
+        }
+
+        if (node.child)
+            node.child.forEach((e) => this.drawNodeThumb(e, false, lCtx, option));
+    }
+
+    calcThumbs(){
+        let maxSide = Math.max(this.node.bb.x2, this.node.bb.y2);
+        this.thumbs.factor = Math.floor((this.thumbs.res / maxSide) * 5) / 5;
+        console.log(this.thumbs.factor); 
+        let calcW = this.node.bb.x2 * this.thumbs.factor;
+        let calcH = this.node.bb.y2 * this.thumbs.factor;
+        this.thumbs.offsetX = (this.thumbs.res - calcW) / 2;
+        this.thumbs.offsetY = (this.thumbs.res - calcH) / 2; 
+    }
+
+    getOptionImages(){
+        this.calcThumbs(); 
+        let tempCanvas = document.createElement('canvas');
+        tempCanvas.width = this.thumbs.res;
+        tempCanvas.height = this.thumbs.res;
+        let lCtx = tempCanvas.getContext('2d');
+        lCtx.translate(this.thumbs.offsetX, this.thumbs.offsetY);
+        lCtx.restore();
+        this.drawNodeThumb(this.node, true, lCtx, 0);
+        lCtx.save();
+        
+        let thumbImage = new Image(); 
+        let thumbEl = document.createElement('img'); 
+        thumbImage.src = tempCanvas.toDataURL();
+        thumbEl.src = thumbImage.src; 
+        document.body.appendChild(thumbEl); 
     }
 
     updateCanvas(){

@@ -44,11 +44,17 @@
         setTimeout(() => {
             console.log(we); 
             //--- image data ---//
-            // console.log(we.getSnapshotBase64()); 
             we.getSnapshot().then((value) => {
-                // console.log(value); 
+                we.getOptionImages(); 
             }) 
         }, 500);
+
+        setTimeout(() => {
+            we.node.params.col[0] = 20; 
+            we.node.params.col[1] = 90;
+            we.syncInputs(); 
+            we.update(); 
+        }, 1000);
     });
 </script>
 </html>
