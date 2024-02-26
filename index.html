@@ -17,7 +17,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         // --- fetching json --- //
         let params = (new URL(document.location)).searchParams;
-        let jsonUrl = "./data/" + (params.get("id") || 1) + ".json"; 
+        let jsonUrl = "./data_2/" + (params.get("id") || 15) + ".json"; 
         let we = null;
         fetch(jsonUrl)
         .then(res => res.json())
@@ -45,15 +45,15 @@
             console.log(we); 
             //--- image data ---//
             we.getSnapshot().then((value) => {
-                we.getOptionImages(); 
+                document.body.appendChild(we.getOptionImages()); 
             }) 
         }, 500);
 
         setTimeout(() => {
-            we.node.params.col[0] = 20; 
-            we.node.params.col[1] = 90;
-            we.syncInputs(); 
-            we.update(); 
+            // we.node.params.col[0] = 20; 
+            // we.node.params.col[1] = 90;
+            // we.syncInputs(); 
+            // we.update(); 
         }, 1000);
     });
 </script>

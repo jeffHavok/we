@@ -101,10 +101,6 @@ class WE{
         return(res); 
     }
 
-    updateNodeParams(params){
-        
-    }
-
     calcNode(node, parent = null, i = 0){
         node.bb = {x1: 0, y1: 0, x2: 0, y2: 0};
         node.geom = {...node.bb}; 
@@ -129,13 +125,7 @@ class WE{
                         x2: this.node.params.w,
                         y2: this.node.params.h };
             node.geom = {...node.bb}; 
-            this.node.winIndex = 0;
         } else {
-            if (node.glass){
-                node.winId = this.node.winIndex; 
-                this.node.winIndex += 1; 
-            }
-
             if (parent.dir == "h"){
                 let pw = parent.geom.x2 - parent.geom.x1;
                 node.bb.y1 = parent.geom.y1; 
@@ -702,9 +692,9 @@ class WE{
     drawNode(node, firstEntry = true){
         this.ctx.strokeStyle = "#000";
         this.ctx.lineWidth = this.dpi * 1.5; 
-        this.ctx.fillStyle = "#eee8e0";
+        this.ctx.fillStyle = "#fefdfa";
         if (node.glass)
-            this.ctx.fillStyle = "#c0c8ef";
+            this.ctx.fillStyle = "#afdfff";
             this.ctx.fillRect(  node.geom.x1,
                                 node.geom.y1,
                                 node.geom.x2 - node.geom.x1,
@@ -716,9 +706,15 @@ class WE{
                                 node.geom.y2 - node.geom.y1);
         if (node.child)
             node.child.forEach((e) => this.drawNode(e, false));
-        if (node.triangle){
+        if (node.winId != undefined){
+            let curTriangle = "none"; 
+            if (this.node.params?.areas[node.winId]?.options)
+                this.node.params.areas[node.winId].triangle
+                    ? curTriangle = this.node.params.areas[node.winId].options[this.node.params.areas[node.winId].triangle]
+                    : curTriangle = this.node.params.areas[node.winId].options[0];
             this.ctx.beginPath();
-            switch (node.triangle) {
+            console.log(curTriangle, "   ", node.winId); 
+            switch (curTriangle) {
                 case "right":
                     this.ctx.moveTo(node.geom.x1, node.geom.y1);
                     this.ctx.lineTo(node.geom.x2, node.geom.y2 - (node.geom.y2 - node.geom.y1) / 2);
@@ -748,7 +744,7 @@ class WE{
     drawNodeThumb(node, firstEntry = true, lCtx, option = 0){
         lCtx.strokeStyle = "#000";
         lCtx.lineWidth = 1; 
-        lCtx.fillStyle = "#90c0f0";
+        lCtx.fillStyle = "#afdfff";
         if (firstEntry){
             lCtx.strokeRect(node.bb.x1 * this.thumbs.factor,
                             node.bb.y1 * this.thumbs.factor,
@@ -756,6 +752,10 @@ class WE{
                             (node.bb.y2 - node.bb.y1) * this.thumbs.factor);
         } 
         if (node.glass){
+            // lCtx.fillStyle = `hsl(${(node.winId || 0) * 60}deg, 70%, 60%)`;
+            option == node.winId
+                ? lCtx.fillStyle = "#60a0ff"
+                : lCtx.fillStyle = "#afdfff"; 
             lCtx.fillRect(node.bb.x1 * this.thumbs.factor,
                         node.bb.y1 * this.thumbs.factor,
                         (node.bb.x2 - node.bb.x1) * this.thumbs.factor,
@@ -781,21 +781,53 @@ class WE{
     }
 
     getOptionImages(){
+        let wrapEl = document.createElement('div');
+        wrapEl.classList.add("we-option-wrap"); 
         this.calcThumbs(); 
-        let tempCanvas = document.createElement('canvas');
-        tempCanvas.width = this.thumbs.res;
-        tempCanvas.height = this.thumbs.res;
-        let lCtx = tempCanvas.getContext('2d');
-        lCtx.translate(this.thumbs.offsetX, this.thumbs.offsetY);
-        lCtx.restore();
-        this.drawNodeThumb(this.node, true, lCtx, 0);
-        lCtx.save();
-        
-        let thumbImage = new Image(); 
-        let thumbEl = document.createElement('img'); 
-        thumbImage.src = tempCanvas.toDataURL();
-        thumbEl.src = thumbImage.src; 
-        document.body.appendChild(thumbEl); 
+        this.node.params.areas.forEach((area, j) =>{
+            let tempCanvas = document.createElement('canvas');
+            tempCanvas.width = this.thumbs.res;
+            tempCanvas.height = this.thumbs.res;
+            let lCtx = tempCanvas.getContext('2d');
+            lCtx.translate(this.thumbs.offsetX, this.thumbs.offsetY);
+            lCtx.restore();
+            this.drawNodeThumb(this.node, true, lCtx, j);
+            lCtx.save();
+            
+            let optionEl = document.createElement('div'); 
+            let thumbEl = document.createElement('img'); 
+            let selectEl = document.createElement('select')
+            let thumbImage = new Image(); 
+
+            optionEl.classList.add("we-option");
+            selectEl.name = `select-${j}`;
+
+            area.options.forEach((option, k) => {
+                let selectItemEl = document.createElement('option'); 
+                selectItemEl.value = `option-${k}`
+                selectItemEl.innerHTML = option; 
+                if (area.triangle == k){
+                    selectItemEl.selected = true; 
+                }
+                selectEl.appendChild(selectItemEl);
+            })
+
+            selectEl.addEventListener('change', (e) => {
+                let selectedIndex = parseInt(e.target.value.split("-")[1]);
+                let optionIndex = parseInt(e.target.name.split("-")[1]);
+                this.node.params.areas[optionIndex].triangle = selectedIndex; 
+                this.update(); 
+            })
+
+            thumbImage.src = tempCanvas.toDataURL();
+            thumbEl.src = thumbImage.src; 
+
+            optionEl.appendChild(thumbEl); 
+            optionEl.appendChild(selectEl); 
+            wrapEl.appendChild(optionEl);
+        })
+
+        return(wrapEl); 
     }
 
     updateCanvas(){
