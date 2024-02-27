@@ -22,11 +22,15 @@
     "areas": [
     {
         "w": "col-0",
-        "h": "row-x"
+        "h": "row-x",
+        "options": ["left", "right", "none"],
+        "triangle": 1
     },
     {
         "w": "col-x",
-        "h": "row-x"
+        "h": "row-x",
+        "options": ["left", "right", "none"],
+        "triangle": 1
     }
     ]
 },
@@ -42,7 +46,7 @@
     ],
     "child": [
         {
-        "triangle": "right",
+        "winId": 0,
         "glass": true
         }
     ]
@@ -95,7 +99,7 @@
     ],
     "child": [
         {
-        "triangle": "left",
+        "winId": 0,
         "glass": true
         }
     ]
