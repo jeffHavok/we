@@ -25,7 +25,7 @@ class WE {
         let spaceLeft = 0;
         let fixedSize = 0;
         this.helpers.forEach((helper, i) => {
-            if (i != index && helper.dir == dir) {
+            if (helper.index != index && helper.dir == dir) {
                 helper.type == "text"
                     ? fixedSize += this.minsize
                     : fixedSize += (helper.value);
@@ -373,11 +373,9 @@ class WE {
                 this.undo();
                 bounds = true;
                 this.resetInputs();
-                // console.log("" + driverDir + "-" + driverIndex); 
                 this.setParam("" + driverDir + "-" + driverIndex, newLimit);
                 this.syncInputs();
                 this.helpers[i].urgent = true;
-                console.log(newLimit);
             } else {
                 this.helpers[i].urgent = false;
             }
@@ -791,47 +789,50 @@ class WE {
         let wrapEl = document.createElement('div');
         wrapEl.classList.add("we-option-wrap");
         this.calcThumbs();
+        
         this.node.params.areas.forEach((area, j) => {
-            let tempCanvas = document.createElement('canvas');
-            tempCanvas.width = this.thumbs.res;
-            tempCanvas.height = this.thumbs.res;
-            let lCtx = tempCanvas.getContext('2d');
-            lCtx.translate(this.thumbs.offsetX, this.thumbs.offsetY);
-            lCtx.restore();
-            this.drawNodeThumb(this.node, true, lCtx, j);
-            lCtx.save();
+            if (area.options){
+                let tempCanvas = document.createElement('canvas');
+                tempCanvas.width = this.thumbs.res;
+                tempCanvas.height = this.thumbs.res;
+                let lCtx = tempCanvas.getContext('2d');
+                lCtx.translate(this.thumbs.offsetX, this.thumbs.offsetY);
+                lCtx.restore();
+                this.drawNodeThumb(this.node, true, lCtx, j);
+                lCtx.save();
 
-            let optionEl = document.createElement('div');
-            let thumbEl = document.createElement('img');
-            let selectEl = document.createElement('select')
-            let thumbImage = new Image();
+                let optionEl = document.createElement('div');
+                let thumbEl = document.createElement('img');
+                let selectEl = document.createElement('select')
+                let thumbImage = new Image();
 
-            optionEl.classList.add("we-option");
-            selectEl.name = `select-${j}`;
+                optionEl.classList.add("we-option");
+                selectEl.name = `select-${j}`;
 
-            area.options.forEach((option, k) => {
-                let selectItemEl = document.createElement('option');
-                selectItemEl.value = `option-${k}`
-                selectItemEl.innerHTML = option;
-                if (area.triangle == k) {
-                    selectItemEl.selected = true;
-                }
-                selectEl.appendChild(selectItemEl);
-            })
+                area.options.forEach((option, k) => {
+                    let selectItemEl = document.createElement('option');
+                    selectItemEl.value = `option-${k}`
+                    selectItemEl.innerHTML = option;
+                    if (area.triangle == k) {
+                        selectItemEl.selected = true;
+                    }
+                    selectEl.appendChild(selectItemEl);
+                })
 
-            selectEl.addEventListener('change', (e) => {
-                let selectedIndex = parseInt(e.target.value.split("-")[1]);
-                let optionIndex = parseInt(e.target.name.split("-")[1]);
-                this.node.params.areas[optionIndex].triangle = selectedIndex;
-                this.update();
-            })
+                selectEl.addEventListener('change', (e) => {
+                    let selectedIndex = parseInt(e.target.value.split("-")[1]);
+                    let optionIndex = parseInt(e.target.name.split("-")[1]);
+                    this.node.params.areas[optionIndex].triangle = selectedIndex;
+                    this.update();
+                })
 
-            thumbImage.src = tempCanvas.toDataURL();
-            thumbEl.src = thumbImage.src;
+                thumbImage.src = tempCanvas.toDataURL();
+                thumbEl.src = thumbImage.src;
 
-            optionEl.appendChild(thumbEl);
-            optionEl.appendChild(selectEl);
-            wrapEl.appendChild(optionEl);
+                optionEl.appendChild(thumbEl);
+                optionEl.appendChild(selectEl);
+                wrapEl.appendChild(optionEl);
+            }
         })
 
         return (wrapEl);
