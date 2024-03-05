@@ -785,6 +785,43 @@ class WE {
         this.thumbs.offsetY = (this.thumbs.res - calcH) / 2;
     }
 
+    setUrlParams(urlString = document.location){
+        let url = new URL(urlString);
+        url.searchParams.set("h", this.node.params.h);
+        url.searchParams.set("w", this.node.params.w);
+        if (this.node.params.col?.length > 0)
+            url.searchParams.set("col", this.node.params.col)
+        if (this.node.params.row?.length > 0)
+            url.searchParams.set("row", this.node.params.row)
+        if (this.node.params.areas){
+            let triangles = this.node.params.areas.map(area => area.triangle);
+            url.searchParams.set("opt", triangles); 
+        }
+    }
+
+    getUrlParams(urlString = document.location){
+        let url = new URL(urlString);
+        if (url.searchParams.has("h"))
+            this.node.params.h = parseFloat(url.searchParams.get("h")); 
+        if (url.searchParams.has("w"))
+            this.node.params.w = parseFloat(url.searchParams.get("w")); 
+        if (url.searchParams.has("col"))
+            this.node.params.col = url.searchParams.get("col").split(',').map(Number); 
+        if (url.searchParams.has("row"))
+            this.node.params.row = url.searchParams.get("row").split(',').map(Number); 
+        if (url.searchParams.has("opt") && this.node.params.areas){
+            let tri = url.searchParams.get("opt").split(',').map(Number);
+            tri.forEach((opt, i) => {
+                if (this.node.params.areas[i])
+                    this.node.params.areas[i].triangle = opt; 
+                let select = document.getElementsByName(`select-${i}`)[0];
+                select.value = `option-${opt}`; 
+            })
+        }
+        this.syncInputs(); 
+        this.update(); 
+    }
+
     getOptionImages() {
         let wrapEl = document.createElement('div');
         wrapEl.classList.add("we-option-wrap");

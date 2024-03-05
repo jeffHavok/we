@@ -12,6 +12,8 @@
         <span id="test-area"></span>
         <button id="test-area-btn">get area</button>
     </div>
+    <button id="set-url-btn">set URL params</button>
+    <button id="get-url-btn">get URL params</button>
 </body>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -26,6 +28,12 @@
             we.init();
         })
         addEventListener("resize", (e) => { we.update(); });
+        document.getElementById("set-url-btn").addEventListener('click', () =>{
+            we.setUrlParams(); 
+        });
+        document.getElementById("get-url-btn").addEventListener('click', () =>{
+            we.getUrlParams(); 
+        });
         //--- get area ---//
         document.getElementById("test-area-btn").addEventListener('click', () =>{
             let el = document.getElementById("test-area");
@@ -50,6 +58,7 @@
         }, 500);
 
         setTimeout(() => {
+            we.setUrlParams(); 
             // we.node.params.col[0] = 20; 
             // we.node.params.col[1] = 90;
             // we.syncInputs(); 
