@@ -24,7 +24,7 @@
         fetch(jsonUrl)
         .then(res => res.json())
         .then(data => {
-            we = new WE("we-cont", data); 
+            we = new WE("we-cont", data, 1); 
             we.init();
         })
         addEventListener("resize", (e) => { we.update(); });

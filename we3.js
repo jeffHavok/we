@@ -545,21 +545,21 @@ class WE {
         if (!this.helpers.length)
             multiplier = 0.5;
 
-        this.wEl.style.top = `calc(50% - ${inputOffsetY + this.helpersSize * multiplier}px)`;
+        this.wEl.style.top = `calc(50% - ${inputOffsetY + this.helpersSize * multiplier * (2 / this.dpi)}px)`;
         this.wEl.style.left = `calc(50% - ${inputOffsetX - this.node.params.w * (this.node.factor / this.dpi) / 2}px)`;
         this.hEl.style.top = `50%`;
-        this.hEl.style.left = `calc(50% - ${inputOffsetX - (this.node.params.w / this.dpi) * this.node.factor - this.helpersSize * multiplier}px`;
+        this.hEl.style.left = `calc(50% - ${inputOffsetX - (this.node.params.w / this.dpi) * this.node.factor - this.helpersSize * multiplier * (2 / this.dpi)}px`;
 
         this.helpers.forEach((helper, i) => {
             if (helper.type == "input") {
                 let j = helper.index;
                 if (helper.dir == "col" && this.colEl[j]) {
-                    this.colEl[j].style.left = `calc(50% - ${inputOffsetX - (this.helpers[i].pos + this.helpers[i].value / 2) * this.node.factor / 2}px)`;
-                    this.colEl[j].style.top = `calc(50% - ${inputOffsetY + this.helpersSize / 2.2}px)`;
+                    this.colEl[j].style.left = `calc(50% - ${inputOffsetX - (this.helpers[i].pos + this.helpers[i].value / 2) * this.node.factor / this.dpi}px)`;
+                    this.colEl[j].style.top = `calc(50% - ${inputOffsetY + this.helpersSize / (this.dpi * 1.1)}px)`;
                 }
                 if (helper.dir == "row" && this.rowEl[j]) {
-                    this.rowEl[j].style.top = `calc(50% - ${inputOffsetY - (this.helpers[i].pos + this.helpers[i].value / 2) * this.node.factor / 2}px)`;
-                    this.rowEl[j].style.left = `calc(50% + ${inputOffsetX + this.helpersSize / 2.4}px)`;
+                    this.rowEl[j].style.top = `calc(50% - ${inputOffsetY - (this.helpers[i].pos + this.helpers[i].value / 2) * this.node.factor / this.dpi}px)`;
+                    this.rowEl[j].style.left = `calc(50% + ${inputOffsetX + this.helpersSize / (this.dpi * 1.2)}px)`;
                 }
             }
         })
@@ -882,7 +882,7 @@ class WE {
         this.node.factor = Math.min(Math.floor(this.canvas.width / (this.node.params.w + 80)),
             Math.floor(this.canvas.height / (this.node.params.h + 80)))
         this.node.invFactor = Math.min(this.canvas.width, this.canvas.height) / 100;
-        this.helpersSize = (this.hEl.clientHeight * 2) + 10;
+        this.helpersSize = (this.hEl.clientHeight * this.dpi) + 10;
     }
 
     update() {
