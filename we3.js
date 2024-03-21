@@ -241,14 +241,14 @@ class WE {
         this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * multiplier * 0.95, this.node.geom.y2);
 
         if (this.snapMode) {
-            let textX = (this.node.geom.x2 - this.node.geom.x1) / 2;
+            let textX = (this.node.geom.x2 - this.node.geom.x1) / this.dpi;
             let textY = this.node.geom.y1 - (this.helpersSize * multiplier);
             this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
             this.ctx.fillText(parseFloat(this.node.params.w.toFixed(2)), textX, textY);
             this.ctx.fillStyle = "#000";
 
             textX = this.node.geom.x2 + (this.helpersSize * (multiplier * 0.65) + 60);
-            textY = (this.node.geom.y2 - this.node.geom.y1) / 2;
+            textY = (this.node.geom.y2 - this.node.geom.y1) / this.dpi;
             this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
             this.ctx.fillText(parseFloat(this.node.params.h.toFixed(2)), textX, textY);
             this.ctx.fillStyle = "#000";
@@ -264,7 +264,7 @@ class WE {
                 this.ctx.lineTo((helper.pos + helper.value) * this.node.factor, this.node.geom.y1 - this.helpersSize * 0.85);
                 if (helper.type == "text" || this.snapMode) {
                     let textX = (helper.pos + helper.value / 2) * this.node.factor;
-                    let textY = this.node.geom.y1 - this.helpersSize / 2 + 20;
+                    let textY = this.node.geom.y1 - this.helpersSize / 2 + 10 * this.dpi;
                     if (helper.value < (this.minsize + 1) && !this.snapMode) {
                         this.ctx.fillStyle = "#ce2020"
                         this.ctx.font = `bold ${this.dpi * 22}px sans-serif`;
@@ -286,7 +286,7 @@ class WE {
                 this.ctx.moveTo(this.node.geom.x2 + this.helpersSize * 0.85, (helper.pos) * this.node.factor);
                 this.ctx.lineTo(this.node.geom.x2 + this.helpersSize * 0.85, (helper.pos + helper.value) * this.node.factor);
                 if (helper.type == "text" || this.snapMode) {
-                    let textX = this.node.geom.x2 + this.helpersSize / 2.4;
+                    let textX = this.node.geom.x2 + this.helpersSize / (2.4);
                     let textY = (helper.pos + helper.value / 2) * this.node.factor + (this.node.factor * 4);
                     if (helper.value < (this.minsize + 1) && !this.snapMode) {
                         this.ctx.fillStyle = "#ce2020"
