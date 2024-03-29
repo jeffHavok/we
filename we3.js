@@ -719,7 +719,10 @@ class WE {
                 break;
             default:
                 let dirlist = dir.split("-");
-                dirlist.forEach(adir => this.drawTriangle(node, adir));
+                dirlist.forEach(adir => {
+                    if (typeof adir == 'string' && adir != "none" && adir != "")
+                        this.drawTriangle(node, adir);
+                });
         }
     }
 
