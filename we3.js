@@ -766,7 +766,8 @@ class WE {
                 (node.bb.x2 - node.bb.x1) * this.thumbs.factor,
                 (node.bb.y2 - node.bb.y1) * this.thumbs.factor);
         }
-        if (node.glass) {
+        // if (node.winId != undefined) {
+        if (node.glass || node.winId != undefined) {
             // lCtx.fillStyle = `hsl(${(node.winId || 0) * 60}deg, 70%, 60%)`;
             option == node.winId
                 ? lCtx.fillStyle = "#60a0ff"
