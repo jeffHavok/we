@@ -1,8 +1,8 @@
 {
     "params": {
         "h": 120,
-        "w": 300,
-        "col": [ 75, 75, 75 ],
+        "w": 285,
+        "col": [ 95, 95 ],
         "minh": 60,
         "maxh": 200,
         "minw": 90,
@@ -16,12 +16,6 @@
         },
         {
             "w": "col-1",
-            "h": "row-x",
-            "options": ["top", "bottom"],
-            "triangle": 1
-        },
-        {
-            "w": "col-2",
             "h": "row-x",
             "options": ["top", "bottom"],
             "triangle": 1
@@ -48,8 +42,8 @@
             ]
         },
         {
-            "pd": [ 3 ],  
             "size": "col-1",
+            "pd": [ 3 ],  
             "child": [
                 {
                     "winId": 1,
@@ -59,19 +53,9 @@
         },
         {
             "pd": [ 3 ],  
-            "size": "col-2",
             "child": [
                 {
                     "winId": 2,
-                    "glass": true
-                }
-            ]
-        },
-        {
-            "pd": [ 3 ],  
-            "child": [
-                {
-                    "winId": 3,
                     "glass": true
                 }
             ]

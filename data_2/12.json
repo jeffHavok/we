@@ -1,0 +1,34 @@
+{
+"params": {
+    "h": 35,
+    "w": 35,
+    "minh": 30,
+    "maxh": 75,
+    "minw": 30,
+    "maxw": 75,
+    "areas": [
+    {
+        "w": "col-x",
+        "h": "row-x",
+        "options": ["top-bottom", "none"]
+    }
+    ]
+},
+"pd": [
+    2
+],
+"child": [
+    {
+    "pd": [
+        3
+    ],
+    "child": [
+        {
+            "winId": 0,
+            "triangle": "right",
+            "glass": true
+        }
+    ]
+    }
+]
+}
