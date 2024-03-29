@@ -695,6 +695,34 @@ class WE {
             })
     }
 
+    drawTriangle(node, dir = "none"){
+        switch (dir) {
+            case "right":
+                this.ctx.moveTo(node.geom.x1, node.geom.y1);
+                this.ctx.lineTo(node.geom.x2, node.geom.y2 - (node.geom.y2 - node.geom.y1) / 2);
+                this.ctx.lineTo(node.geom.x1, node.geom.y2);
+                break;
+            case "left":
+                this.ctx.moveTo(node.geom.x2, node.geom.y1);
+                this.ctx.lineTo(node.geom.x1, node.geom.y2 - (node.geom.y2 - node.geom.y1) / 2);
+                this.ctx.lineTo(node.geom.x2, node.geom.y2);
+                break;
+            case "bottom":
+                this.ctx.moveTo(node.geom.x1, node.geom.y1);
+                this.ctx.lineTo(node.geom.x2 - (node.geom.x2 - node.geom.x1) / 2, node.geom.y2);
+                this.ctx.lineTo(node.geom.x2, node.geom.y1);
+                break;
+            case "top":
+                this.ctx.moveTo(node.geom.x1, node.geom.y2);
+                this.ctx.lineTo(node.geom.x2 - (node.geom.x2 - node.geom.x1) / 2, node.geom.y1);
+                this.ctx.lineTo(node.geom.x2, node.geom.y2);
+                break;
+            default:
+                let dirlist = dir.split("-");
+                dirlist.forEach(adir => this.drawTriangle(node, adir));
+        }
+    }
+
     drawNode(node, firstEntry = true) {
         this.ctx.strokeStyle = "#000";
         this.ctx.lineWidth = this.dpi * 1.5;
@@ -719,28 +747,7 @@ class WE {
                     ? curTriangle = this.node.params.areas[node.winId].options[this.node.params.areas[node.winId].triangle]
                     : curTriangle = this.node.params.areas[node.winId].options[0];
             this.ctx.beginPath();
-            switch (curTriangle) {
-                case "right":
-                    this.ctx.moveTo(node.geom.x1, node.geom.y1);
-                    this.ctx.lineTo(node.geom.x2, node.geom.y2 - (node.geom.y2 - node.geom.y1) / 2);
-                    this.ctx.lineTo(node.geom.x1, node.geom.y2);
-                    break;
-                case "left":
-                    this.ctx.moveTo(node.geom.x2, node.geom.y1);
-                    this.ctx.lineTo(node.geom.x1, node.geom.y2 - (node.geom.y2 - node.geom.y1) / 2);
-                    this.ctx.lineTo(node.geom.x2, node.geom.y2);
-                    break;
-                case "bottom":
-                    this.ctx.moveTo(node.geom.x1, node.geom.y1);
-                    this.ctx.lineTo(node.geom.x2 - (node.geom.x2 - node.geom.x1) / 2, node.geom.y2);
-                    this.ctx.lineTo(node.geom.x2, node.geom.y1);
-                    break;
-                case "top":
-                    this.ctx.moveTo(node.geom.x1, node.geom.y2);
-                    this.ctx.lineTo(node.geom.x2 - (node.geom.x2 - node.geom.x1) / 2, node.geom.y1);
-                    this.ctx.lineTo(node.geom.x2, node.geom.y2);
-                    break;
-            }
+            this.drawTriangle(node, curTriangle);
             this.ctx.closePath();
             this.ctx.stroke();
         }
