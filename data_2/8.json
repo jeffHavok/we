@@ -1,11 +1,11 @@
 {
     "params": {
         "h": 105,
-        "minh": 60,
-        "maxh": 200,
+        "minh": 105,
+        "maxh": 205,
         "w": 70,
-        "minw": 30,
-        "maxw": 120,
+        "minw": 70,
+        "maxw": 150,
         "row": [ 74 ],
         "col": [ 35 ],
         "colOrder": [ -1, 0 ],
