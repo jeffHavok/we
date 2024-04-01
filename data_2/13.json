@@ -3,10 +3,10 @@
     "h": 35,
     "w": 70,
     "col": [ 35 ],
-    "minh": 30,
-    "maxh": 75,
-    "minw": 30,
-    "maxw": 150,
+    "minh": 35,
+    "maxh": 150,
+    "minw": 70,
+    "maxw": 300,
     "areas": [
     {
         "w": "col-0",

@@ -4,8 +4,8 @@
     "w": 120,
     "minh": 30,
     "maxh": 150,
-    "minw": 30,
-    "maxw": 150,
+    "minw": 35,
+    "maxw": 120,
     "areas": [
     {
         "w": "col-x",

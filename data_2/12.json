@@ -2,10 +2,10 @@
 "params": {
     "h": 35,
     "w": 35,
-    "minh": 30,
-    "maxh": 75,
-    "minw": 30,
-    "maxw": 75,
+    "minh": 35,
+    "maxh": 150,
+    "minw": 35,
+    "maxw": 150,
     "areas": [
     {
         "w": "col-x",
