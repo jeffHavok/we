@@ -695,7 +695,7 @@ class WE {
             })
     }
 
-    drawTriangle(node, dir = "none"){
+    drawTriangle(node, dir = "none", vscale = 1, hscale = 1){
         switch (dir) {
             case "right":
                 this.ctx.moveTo(node.geom.x1, node.geom.y1);
