@@ -13,13 +13,13 @@
     {
         "w": "col-1",
         "h": "row-0",
-        "options": ["top-left", "none"],
+        "options": ["top-left","top-right", "none"],
         "triangle": 0
     },
     {
         "w": "col-2",
         "h": "row-0",
-        "options": ["top-right", "none"],
+        "options": ["top-left","top-right", "none"],
         "triangle": 0
     }
     ]

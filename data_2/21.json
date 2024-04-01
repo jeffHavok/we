@@ -13,7 +13,7 @@
     {
         "w": "col-0",
         "h": "row-0",
-        "options": ["top-left", "none"],
+        "options": ["top-left","top-right","none"],
         "triangle": 0
     }
     ]
