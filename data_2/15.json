@@ -7,6 +7,7 @@
         "maxh": 150,
         "minw": 140,
         "maxw": 300,
+        "impost": ["h", "h", "h"],
         "areas": [
         {
             "w": "col-0",

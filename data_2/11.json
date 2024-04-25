@@ -10,6 +10,7 @@
         "col": [ 59, 60 ],
         "colOrder": [ 0, 1, -1 ],
         "rowOrder": [ -1, 0 ],
+        "impost": ["col-0", "col-x", "h", "h"],
         "areas": [
             {
                 "w": "col-0",

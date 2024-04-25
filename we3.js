@@ -14,7 +14,7 @@ class WE {
         this.rowEl = [];
         this.ctx = null;
         this.snapMode = false;
-        this.forceCenter = false;
+        this.forceCenter = true;
         this.thumbs = {
             res: 128,
             factor: 1,
@@ -360,7 +360,7 @@ class WE {
         this.update();
         let b64 = this.canvas.toDataURL("image/png");
         this.snapMode = false;
-        this.forceCenter = false;
+        this.forceCenter = true;
         this.update();
         return b64;
     }
@@ -545,8 +545,8 @@ class WE {
         if (!this.helpers.length)
             multiplier = 0.5;
 
-        this.wEl.style.top = `calc(50% - ${inputOffsetY + this.helpersSize * multiplier * (2 / this.dpi)}px)`;
-        this.wEl.style.left = `calc(50% - ${inputOffsetX - this.node.params.w * (this.node.factor / this.dpi) / 2}px)`;
+        this.wEl.style.top = `calc(50% - ${inputOffsetY + this.helpersSize * multiplier * (2 / this.dpi) - (this.helpersSize / 2)}px)`;
+        this.wEl.style.left = `calc(50% - ${inputOffsetX - this.node.params.w * (this.node.factor / this.dpi) / 2 + (this.helpersSize / 2)}px)`;
         this.hEl.style.top = `50%`;
         this.hEl.style.left = `calc(50% - ${inputOffsetX - (this.node.params.w / this.dpi) * this.node.factor - this.helpersSize * multiplier * (2 / this.dpi)}px`;
 

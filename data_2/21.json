@@ -9,6 +9,7 @@
     "row": [150],
     "colOrder": [-1, 0],
     "col": [75],
+    "impost": ["w", "row-0"],
     "areas": [
     {
         "w": "col-0",
