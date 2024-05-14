@@ -13,13 +13,37 @@
         "impost": ["w", "h", "h"],
         "areas": [
             {
-                "w": "col-0",
-                "h": "row-0",
+                "w": "col-x",
+                "h": "row-x",
                 "options": ["left", "right", "none"],
                 "triangle": 1
             },
             {
+                "w": "col-0",
+                "h": "row-x",
+                "options": ["left", "right", "none"],
+                "triangle": 0
+            },
+            {
+                "w": "col-1",
+                "h": "row-x",
+                "options": ["left", "right", "none"],
+                "triangle": 0
+            },
+            {
                 "w": "col-x",
+                "h": "row-0",
+                "options": ["left", "right", "none"],
+                "triangle": 0
+            },
+            {
+                "w": "col-0",
+                "h": "row-0",
+                "options": ["left", "right", "none"],
+                "triangle": 0
+            },
+            {
+                "w": "col-1",
                 "h": "row-0",
                 "options": ["left", "right", "none"],
                 "triangle": 0
@@ -47,7 +71,7 @@
                 "size": "row-0",
                 "pd": [ 3 ],
                 "child": [
-                    { "winId": 0, "glass": true }
+                    { "winId": 3, "glass": true }
                 ]
             }
         ]
@@ -62,14 +86,14 @@
             {
                 "pd": [ 3 ],
                 "child": [
-                    { "glass": true }
+                    { "winId": 1, "glass": true }
                 ]
             },
             {
                 "size": "row-0",
                 "pd": [ 3 ],
                 "child": [
-                    { "glass": true }
+                    { "winId": 4, "glass": true }
                 ]
             }
         ]
@@ -83,14 +107,14 @@
             {
                 "pd": [ 3 ],
                 "child": [
-                    { "winId": 1, "glass": true }
+                    { "winId": 2, "glass": true }
                 ]
             },
             {
                 "size": "row-0",
                 "pd": [ 3 ],
                 "child": [
-                    { "winId": 1, "glass": true }
+                    { "winId": 5, "glass": true }
                 ]
             }
         ]
