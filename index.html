@@ -19,7 +19,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         // --- fetching json --- //
         let params = (new URL(document.location)).searchParams;
-        let jsonUrl = "./data_2/" + (params.get("id") || 15) + ".json"; 
+        let jsonUrl = "./data_2/" + (params.get("id") || 15) + "-in.json"; 
         let we = null;
         fetch(jsonUrl)
         .then(res => res.json())
