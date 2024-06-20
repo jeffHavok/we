@@ -1,0 +1,51 @@
+{
+"params": {
+    "h": 50,
+    "w": 100,
+    "col": [ 50 ],
+    "minh": 14,
+    "maxh": 59,
+    "minw": 28,
+    "maxw": 118,
+    "impost": ["h"],
+    "areas": [
+    {
+        "w": "col-0",
+        "h": "row-x",
+        "options": ["top-bottom", "none"],
+        "triangle": 0
+    },
+    {
+        "w": "col-x",
+        "h": "row-x",
+        "options": ["top-bottom", "none"],
+        "triangle": 0
+    }
+    ]
+},
+"pd": [ 2 ],
+"gap": 4,
+"child": [
+    {
+        "size": "col-0",
+        "pd": [ 3 ],
+        "child": [
+            {
+                "winId": 0,
+                "triangle": "right",
+                "glass": true
+            }
+        ]
+    },
+    {
+        "pd": [ 3 ],  
+        "child": [
+            {
+                "winId": 1,
+                "triangle": "right",
+                "glass": true
+            }
+        ]
+    }
+]
+}

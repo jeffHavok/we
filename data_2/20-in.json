@@ -1,0 +1,60 @@
+{
+"params": {
+    "h": 87,
+    "w": 70,
+    "minh": 32,
+    "maxh": 118,
+    "minw": 32,
+    "maxw": 86,
+    "row": [59],
+    "colOrder": [-1, 0],
+    "col": [35],
+    "impost": ["h", "col-0"],
+    "areas": [
+    {
+        "w": "col-0",
+        "h": "row-0",
+        "options": ["top-left","top-right","none"],
+        "triangle": 0
+    }
+    ]
+},
+"pd": [3],
+"child": [{
+    "gap": 2,
+    "child":[
+        {
+            "pd": [3],
+            "child": [
+                { "glass": true }
+            ]
+        },
+        {
+            "size": "col-0",
+            "dir": "v",
+            "gap": 2, 
+            "borderless": true, 
+            "child": [
+                {
+                    "decor": 1,
+                    "size": "row-0",
+                    "pd": [4],
+                    "child":[{
+                        "pd": [3],
+                        "child":[{
+                            "winId": 0,
+                            "glass": true
+                        }]
+                    }]
+                },
+                {
+                    "pd": [3],
+                    "child":[{
+                        "glass": true 
+                    }]
+                }
+            ]
+        }
+    ]
+}]
+}

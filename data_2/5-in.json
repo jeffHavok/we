@@ -1,0 +1,55 @@
+{
+    "params": {
+        "h": 70,
+        "minh": 24,
+        "maxh": 78,
+        "w": 60,
+        "minw": 12,
+        "maxw": 29,
+        "row": [
+        50
+        ],
+        "rowOrder": [
+        -1,
+        0
+        ],
+        "impost": ["w"],
+        "areas": [
+        {
+            "w": "col-x",
+            "h": "row-0",
+            "options": ["left", "right", "none"],
+            "triangle": 1
+        }
+        ]
+    },
+    "dir": "v",
+    "gap": 4,
+    "pd": [
+        2
+    ],
+    "child": [
+        {
+        "pd": [
+            3
+        ],
+        "child": [
+            {
+            "glass": true
+            }
+        ]
+        },
+        {
+        "size": "row-0",
+        "pd": [
+            3
+        ],
+        "child": [
+            {
+            "winId": 0,
+            "glass": true
+            }
+        ]
+        }
+    ]
+}
